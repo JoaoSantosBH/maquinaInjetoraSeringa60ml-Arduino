@@ -80,39 +80,32 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
   //CASO BOTAO INICIAR APERTADO
   if (estadoBotaoInje == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 0){
-        
           iniciarInjecao();
        }
-          delay(500);
     } 
-  
-  //CASO BOTAO RECOLHER APERTADO
-  if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
-      if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
-          recolherCursor();
-        }
-          delay(500);
-    }
     
   //NO CASO DE FIM DE CURSO INJECAO COMPLETA PARAR MOTOR DE PASSO
   if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
        }
-          delay(500);
-
     }
-     
-    //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
+    
+ //CASO BOTAO RECOLHER APERTADO
+  if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
+      if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
+          recolherCursor();
+        }
+    }
+
+ //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
     if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo== 1){
           pararMotorPassoRecolhimento();  
        }
-          delay(500);
-
     }
 
-    //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
+ //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
           // if(estaInjetando == 1  || estaAguardando ==0 || estaRecolhendo== 1){
             pararMaquina();    
@@ -214,7 +207,7 @@ void tocarBuz(){
 
 //INICIA A INJECAO
 void iniciarInjecao(){
-  estaInjetando = 1;
+  estaInjetando  = 1;
   estaAguardando = 0; 
   estaRecolhendo = 0;
   Serial.println("BOTAO INjeCAO PERTADO, INICIANDO");
