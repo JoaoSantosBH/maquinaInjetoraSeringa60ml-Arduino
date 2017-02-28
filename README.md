@@ -21,8 +21,8 @@ Listagem dos componentes necessários:
 1 motor passo nema 14
 1 drive A4988
 1 seringa 60ml
-1 estrutura base (projeto 3D anexo)
+1 estrutura base maquina (projeto 3D para impressão em anexo)
 1 Acoplamento Flexivel/cnc/motor Passo 5x5 Mm
-1 parafuso 3.5mm
+1 parafuso 3.5mm 30cm
 1 protoboard
 1 fonte 12V 1A
