@@ -16,13 +16,15 @@ Listagem dos componentes necessários:
 1 led verde
 3 chaves tacteis
 2 chaves fim de curso
-5 resistores 100
+5 resistores 100 ohm
 1 capacitor eletrolitico 100uF 16V
 1 motor passo nema 14
 1 drive A4988
 1 seringa 60ml
 1 estrutura base maquina (projeto 3D para impressão em anexo)
 1 Acoplamento Flexivel/cnc/motor Passo 5x5 Mm
-1 parafuso 3.5mm 30cm
+1 barra parafuso 5mm - 1m 
+2 porcas sextavadas 5mm
 1 protoboard
 1 fonte 12V 1A
+1 rolimã 2.2cm ø
