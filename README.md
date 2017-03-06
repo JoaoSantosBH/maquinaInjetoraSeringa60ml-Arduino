@@ -16,7 +16,7 @@ Listagem dos componentes necessários:
 1 led verde
 3 chaves tacteis
 2 chaves fim de curso
-5 resistores 100 ohm
+5 resistores 100Ω
 1 capacitor eletrolitico 100uF 16V
 1 motor passo nema 14
 1 drive A4988
