@@ -1,11 +1,12 @@
 # maquinaInjetoraSeringa60ml
 
 
-Prototipo de maquina injetora de dieta liquida com seringa 60ML
-Para infusão de sucos e dietas em pacientes que se alimentam através de sonda
-a duração da infusão é de 3 minutos aproximadamente, 
-para evitar ulceração no paciente devido ao alimento entrar muito rapidamente, como é o caso, quando aplicado à mão.
-
+Prototipo de maquina injetora de dieta liquida com seringa 60ML;
+Para infusão de sucos e dietas em pacientes que se alimentam através de sonda;
+A duração da infusão é de 3 minutos aproximadamente, para 60 ml de dieta, com intuito de evitar ulceração no paciente,
+devido ao alimento entrar muito rapidamente, como é o caso, quando aplicado à mão.
+Neste caso a dieta pode ser ministrada lentamente, evitando o ri
+sco de ulcera;
 
 
 Listagem dos componentes necessários:
