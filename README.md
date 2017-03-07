@@ -17,7 +17,7 @@ Listagem dos componentes necessários:</br>
 <li>3 chaves tacteis</li>
 <li>2 chaves fim de curso</li>
 <li>5 resistores 100Ω</li>
-<li>1 capacitor eletrolitico 100uF 16V</li>
+<li>1 capacitor eletrolitico 100µF 16V</li>
 <li>1 motor passo nema 14</li>
 <li>1 drive A4988</li>
 <li>1 seringa 60ml</li>
