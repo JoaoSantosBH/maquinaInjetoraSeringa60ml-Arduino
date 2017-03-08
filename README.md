@@ -1,7 +1,7 @@
-# maquinaInjetoraSeringa60ml
+# maquinaInjetoraSeringa60mlArduino
 
 
-Prototipo de maquina injetora de dieta liquida com seringa 60ML;</br>
+Prototipo de maquina injetora de dieta liquida com seringa 60ML desenvolvido com Arduino;</br>
 Projetada para infusão de sucos e dietas mais ricas em fibras e mais densas, em pacientes que se alimentam através de sonda;</br>
 A duração da infusão é de 3 minutos aproximadamente, para 60 ml de dieta, com intuito de evitar ulceração no paciente,</br>
 devido ao alimento entrar muito rapidamente, como é o caso, quando aplicado à mão.</br>
