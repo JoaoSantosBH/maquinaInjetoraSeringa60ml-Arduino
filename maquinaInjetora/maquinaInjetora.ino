@@ -107,20 +107,16 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
 
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-          // if(estaInjetando == 1  || estaAguardando ==0 || estaRecolhendo== 1){
-            pararMaquina();    
-           //}
+           if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 1){
+            Serial.println("BOTAO PARAR");
+            pararMaquina(); 
+               
+           }
        }
    
      motorPasso.run();
 
 //CASO DESEJE MONITORAR STAtUS descomente para ver na serial
-//   Serial.println("Status esta Injetando");
-//   Serial.println(estaInjetando);
-//   Serial.println("Status esta Aguardando");
-//   Serial.println(estaAguardando);
-//   Serial.println("Status esta Recolhendo");
-//   Serial.println(estaRecolhendo);
 
 
 }
@@ -210,13 +206,14 @@ void iniciarInjecao(){
   estaInjetando  = 1;
   estaAguardando = 0; 
   estaRecolhendo = 0;
-  Serial.println("BOTAO INjeCAO PERTADO, INICIANDO");
+  Serial.println("INICIANDO INJECAO");
   apagarLedVerde();
   acenderLedVermelho();
   digitalWrite(pino_enable, LOW);
   motorPasso.setMaxSpeed(150);
   motorPasso.setSpeed(150); 
   motorPasso.moveTo(-passo);
+  verificarStatus();
 }
 
 //INICIA O RECOLHIMENTO DO trilHO
@@ -227,17 +224,17 @@ void recolherCursor(){
   noTone(buzzer);
   acenderLedVermelho();
   apagarLedVerde();
-  Serial.println("BOTAO RECOLHER PERTADO, RECOLHENDO CURSOR");
+  Serial.println("RECOLHENDO CURSOR");
   digitalWrite(pino_enable, LOW);   
   motorPasso.setMaxSpeed(500);
   motorPasso.setSpeed(500);
   motorPasso.moveTo(passo);
+  verificarStatus();
 }
 
 //PARA INJECAO E EMITE ALERTA SONORO
 void pararMotorPassoInjecao(){
   Serial.println("A INJECAO ACABOU");
-  Serial.println(estadoFimInjCompleto);
   estaInjetando  = 0;
   estaAguardando = 1; 
   estaRecolhendo = 1;
@@ -249,12 +246,12 @@ void pararMotorPassoInjecao(){
   delay(500);
   acenderLedVerde();
   apagarLedVermelho();
+  verificarStatus();
 }
 
 //PARA RECOLHIMENTO E EMITE ALERTA SONORO
 void pararMotorPassoRecolhimento(){
-  Serial.println("A INJECAO ACABOU");
-  Serial.println(estadoFimInjCompleto);
+  Serial.println("A POSICAO CHGOU AO FIm");
   estaInjetando  = 0;
   estaAguardando = 1; 
   estaRecolhendo = 0;
@@ -266,6 +263,7 @@ void pararMotorPassoRecolhimento(){
   delay(500);
   acenderLedVerde();
   apagarLedVermelho();
+  verificarStatus();
 }
 
 //PARA MAQUINA
@@ -280,6 +278,20 @@ void pararMaquina(){
   motorPasso.setSpeed(150);
   acenderLedVerde();
   apagarLedVermelho();
+  verificarStatus();  
+}
+
+//VERIFICA STATUS CORRENTE DA MAQUINA
+void verificarStatus(){
+     if(estaRecolhendo == 1){
+    Serial.println("Status esta Recolhendo");
+   }
+   if(estaInjetando == 1){
+    Serial.println("Status esta Injetando");
+   }
+   if(estaAguardando == 1){
+    Serial.println("Status esta Aguardando");
+   }
 }
 
 
