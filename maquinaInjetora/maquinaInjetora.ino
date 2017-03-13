@@ -107,7 +107,7 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
 
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 1){
+           if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 0){
             Serial.println("BOTAO PARAR");
             pararMaquina(); 
                
