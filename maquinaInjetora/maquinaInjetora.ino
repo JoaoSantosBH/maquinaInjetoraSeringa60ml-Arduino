@@ -135,68 +135,6 @@ void acenderLedVermelho(){
 void apagarLedVermelho(){
   digitalWrite(ledVermelho, LOW);
 }
-void tocarBuz(){
-  
-// THE IMPERIAL MARCH - John Williams 
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1200);   
-  delay(250);
-  tone(buzzer,1850);   
-  delay(250);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1200);   
-  delay(250);
-  tone(buzzer,1850);   
-  delay(250);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(500);
-  ///////////////////
-  tone(buzzer,2220);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,2220);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,2220);   
-  delay(500);
-  tone(buzzer,2369);   
-  delay(250);
-  tone(buzzer,1850);   
-  delay(250);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-  delay(50);
-  tone(buzzer,1200);   
-  delay(250);
-  tone(buzzer,1850);   
-  delay(250);
-  tone(buzzer,1500);   
-  delay(500);
-  noTone(buzzer);
-}
 
 
 //METODOS DA MAQUINA
@@ -263,6 +201,7 @@ void pararMotorPassoRecolhimento(){
   delay(500);
   acenderLedVerde();
   apagarLedVermelho();
+  voltarUmPoquinho();
   verificarStatus();
 }
 
@@ -281,6 +220,20 @@ void pararMaquina(){
   verificarStatus();  
 }
 
+//FUNCAO QUE RECOLHE EMBOLO PARA NAO COLIDIR COM FIM DE CURSO
+void voltarUmPoquinho(){
+   Serial.println("INICIANDO RETORNO ESPACO");
+  apagarLedVerde();
+  acenderLedVermelho();
+  digitalWrite(pino_enable, LOW);
+  motorPasso.setMaxSpeed(150);
+  motorPasso.setSpeed(150); 
+  motorPasso.moveTo(-10);
+  apagarLedVermelho();
+  acenderLedVerde();
+  
+  verificarStatus();
+}
 //VERIFICA STATUS CORRENTE DA MAQUINA
 void verificarStatus(){
      if(estaRecolhendo == 1){
@@ -292,6 +245,68 @@ void verificarStatus(){
    if(estaAguardando == 1){
     Serial.println("Status esta Aguardando");
    }
+}
+
+// THE IMPERIAL MARCH - John Williams
+void tocarBuz(){   
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1200);   
+  delay(250);
+  tone(buzzer,1850);   
+  delay(250);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1200);   
+  delay(250);
+  tone(buzzer,1850);   
+  delay(250);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(500);
+  ///////////////////
+  tone(buzzer,2220);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2220);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2220);   
+  delay(500);
+  tone(buzzer,2369);   
+  delay(250);
+  tone(buzzer,1850);   
+  delay(250);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1200);   
+  delay(250);
+  tone(buzzer,1850);   
+  delay(250);
+  tone(buzzer,1500);   
+  delay(500);
+  noTone(buzzer);
 }
 
 
