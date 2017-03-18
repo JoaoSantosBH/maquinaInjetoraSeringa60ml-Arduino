@@ -198,6 +198,7 @@ void pararMotorPassoRecolhimento(){
   motorPasso.setMaxSpeed(150);
   motorPasso.setSpeed(150);
   tocarBuz();
+  motorPasso.moveTo(0);
   delay(500);
   acenderLedVerde();
   apagarLedVermelho();
@@ -227,8 +228,8 @@ void voltarUmPoquinho(){
   acenderLedVermelho();
   digitalWrite(pino_enable, LOW);
   motorPasso.setMaxSpeed(150);
-  motorPasso.setSpeed(150); 
-  motorPasso.moveTo(-10);
+  motorPasso.setSpeed(100); 
+  motorPasso.moveTo(-5);
   apagarLedVermelho();
   acenderLedVerde();
   
