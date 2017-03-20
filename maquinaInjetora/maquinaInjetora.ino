@@ -63,6 +63,7 @@ digitalWrite(pino_enable, HIGH);
 acenderLedVerde();
 //INICIA COMUNICACAO SERIAL
 Serial.begin(9600);
+Serial.print("Maquina inicializada");
 }
 
 
@@ -85,33 +86,33 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
     } 
     
   //NO CASO DE FIM DE CURSO INJECAO COMPLETA PARAR MOTOR DE PASSO
-  if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
+  else if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
        }
     }
     
  //CASO BOTAO RECOLHER APERTADO
-  if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
+ else  if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
       if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
           recolherCursor();
         }
     }
 
  //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
-    if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
+   else if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo== 1){
           pararMotorPassoRecolhimento();  
        }
     }
 
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
-    if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 0){
+  else  if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
+           //if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 0){
             Serial.println("BOTAO PARAR");
             pararMaquina(); 
                
-           }
+          // }
        }
    
      motorPasso.run();
@@ -189,7 +190,7 @@ void pararMotorPassoInjecao(){
 
 //PARA RECOLHIMENTO E EMITE ALERTA SONORO
 void pararMotorPassoRecolhimento(){
-  Serial.println("A POSICAO CHGOU AO FIm");
+  Serial.println("O RECOLHIMENTO CHeGOU AO FIm");
   estaInjetando  = 0;
   estaAguardando = 1; 
   estaRecolhendo = 0;
@@ -229,7 +230,7 @@ void voltarUmPoquinho(){
   digitalWrite(pino_enable, LOW);
   motorPasso.setMaxSpeed(150);
   motorPasso.setSpeed(100); 
-  motorPasso.moveTo(-5);
+  motorPasso.moveTo(-1);
   apagarLedVermelho();
   acenderLedVerde();
   
