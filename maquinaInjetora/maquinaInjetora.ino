@@ -86,28 +86,28 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
     } 
     
   //NO CASO DE FIM DE CURSO INJECAO COMPLETA PARAR MOTOR DE PASSO
-  else if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
+   else if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
        }
     }
     
  //CASO BOTAO RECOLHER APERTADO
- else  if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
+   else if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
       if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
           recolherCursor();
         }
     }
 
  //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
-   else if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
+    else if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo== 1){
           pararMotorPassoRecolhimento();  
        }
     }
 
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
-  else  if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
+    else if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
            //if(estaInjetando == 1  || estaAguardando == 0 || estaRecolhendo== 0){
             Serial.println("BOTAO PARAR");
             pararMaquina(); 
@@ -165,8 +165,8 @@ void recolherCursor(){
   apagarLedVerde();
   Serial.println("RECOLHENDO CURSOR");
   digitalWrite(pino_enable, LOW);   
-  motorPasso.setMaxSpeed(500);
-  motorPasso.setSpeed(500);
+  motorPasso.setMaxSpeed(800);
+  motorPasso.setSpeed(800);
   motorPasso.moveTo(passo);
   verificarStatus();
 }
@@ -178,9 +178,9 @@ void pararMotorPassoInjecao(){
   estaAguardando = 1; 
   estaRecolhendo = 1;
   motorPasso.moveTo(0);
-  digitalWrite(pino_enable, HIGH);
   motorPasso.setMaxSpeed(150);
   motorPasso.setSpeed(150);
+  digitalWrite(pino_enable, HIGH);
   tocarBuz();
   delay(500);
   acenderLedVerde();
@@ -188,24 +188,7 @@ void pararMotorPassoInjecao(){
   verificarStatus();
 }
 
-//PARA RECOLHIMENTO E EMITE ALERTA SONORO
-void pararMotorPassoRecolhimento(){
-  Serial.println("O RECOLHIMENTO CHeGOU AO FIm");
-  estaInjetando  = 0;
-  estaAguardando = 1; 
-  estaRecolhendo = 0;
-  motorPasso.moveTo(0);
-  digitalWrite(pino_enable, HIGH);
-  motorPasso.setMaxSpeed(150);
-  motorPasso.setSpeed(150);
-  tocarBuz();
-  motorPasso.moveTo(0);
-  delay(500);
-  acenderLedVerde();
-  apagarLedVermelho();
-  voltarUmPoquinho();
-  verificarStatus();
-}
+
 
 //PARA MAQUINA
 void pararMaquina(){
@@ -214,27 +197,40 @@ void pararMaquina(){
   estaAguardando = 1; 
   estaRecolhendo = 0;
   motorPasso.moveTo(0);
-  digitalWrite(pino_enable, HIGH);
   motorPasso.setMaxSpeed(150);
   motorPasso.setSpeed(150);
+  digitalWrite(pino_enable, HIGH);
   acenderLedVerde();
   apagarLedVermelho();
   verificarStatus();  
 }
 
+//PARA RECOLHIMENTO E EMITE ALERTA SONORO
+void pararMotorPassoRecolhimento(){
+  Serial.println("O RECOLHIMENTO CHeGOU AO FIm");
+  tocarBuz();
+  motorPasso.setMaxSpeed(150);
+  motorPasso.setSpeed(150);
+  //motorPasso.moveTo(0);
+  delay(500);
+  acenderLedVermelho();
+  apagarLedVerde();
+  voltarUmPoquinho();
+  verificarStatus();
+}
+
 //FUNCAO QUE RECOLHE EMBOLO PARA NAO COLIDIR COM FIM DE CURSO
 void voltarUmPoquinho(){
    Serial.println("INICIANDO RETORNO ESPACO");
-  apagarLedVerde();
-  acenderLedVermelho();
   digitalWrite(pino_enable, LOW);
-  motorPasso.setMaxSpeed(150);
-  motorPasso.setSpeed(100); 
-  motorPasso.moveTo(-1);
-  apagarLedVermelho();
-  acenderLedVerde();
-  
+  motorPasso.moveTo(-6);
+  estaInjetando  = 0;
+  estaAguardando = 1; 
+  estaRecolhendo = 0;
   verificarStatus();
+    apagarLedVermelho();
+  acenderLedVerde();
+    //digitalWrite(pino_enable, HIGH);
 }
 //VERIFICA STATUS CORRENTE DA MAQUINA
 void verificarStatus(){
