@@ -51,12 +51,12 @@ void setup() {
 
 pinMode(botInjetar,INPUT);
 pinMode(botParar, INPUT);
+pinMode(fimCursoInjecaoCompleto, INPUT);
+pinMode(fimCursoRecolhimentoCompleto,INPUT);
 pinMode(botRecolher,INPUT);                     
 pinMode(ledVerde,OUTPUT);
 pinMode(ledVermelho, OUTPUT);
 pinMode(buzzer,OUTPUT);
-pinMode(fimCursoInjecaoCompleto, INPUT);
-pinMode(fimCursoRecolhimentoCompleto,INPUT);
 pinMode(pino_enable, OUTPUT);
 
 // Configuracoes iniciais motor de passo INICIAR PARADO
@@ -79,41 +79,34 @@ estadoBotaoRecolhe = digitalRead(botRecolher);
 estadoBotaoParar = digitalRead(botParar);
 estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
 
-
- 
   //CASO BOTAO INICIAR APERTADO
   if (estadoBotaoInje == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 0){
           iniciarInjecao();
        }
     } 
-    
   //NO CASO DE FIM DE CURSO INJECAO COMPLETA PARAR MOTOR DE PASSO
    if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
        }
-    }
-    
+    } 
  //CASO BOTAO RECOLHER APERTADO
    if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
       if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
           recolherCursor();
         }
     }
-
  //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
     if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo== 1){
           pararMotorPassoRecolhimento();  
        }
     }
-
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
            if(estaInjetando == 1  && estaAguardando == 0 && estaRecolhendo== 0){
-            Serial.println("BOTAO PARAR");
-            pararMaquina();     
+             pararMaquina();     
            }
        }
      motorPasso.run();
@@ -151,7 +144,6 @@ void iniciarInjecao(){
   digitalWrite(pino_enable, LOW);
   motorPasso.move(-passo);
   verificarStatus();
-
 }
 
 //INICIA O RECOLHIMENTO DO trilHO
@@ -168,7 +160,6 @@ void recolherCursor(){
   motorPasso.setAcceleration(2000);//Novo
   motorPasso.move(passo);
   verificarStatus();
-
 }
 
 //PARA INJECAO E EMITE ALERTA SONORO
@@ -183,7 +174,6 @@ void pararMotorPassoInjecao(){
   acenderLedVerde();
   apagarLedVermelho();
   verificarStatus();
-
 }
 
 //PARA MAQUINA
@@ -199,7 +189,6 @@ void pararMaquina(){
   acenderLedVermelho();
   apagarLedVerde();
   verificarStatus();
-
 }
 
 // QUANDO ATINGE O FDC - PARA RECOLHIMENTO E EMITE ALERTA SONORO
@@ -213,7 +202,6 @@ void pararMotorPassoRecolhimento(){
   delay(500);
   voltarUmPoquinho();
   verificarStatus();
-
 }
 
 //FUNCAO QUE RECOLHE EMBOLO PARA NAO COLIDIR COM MOLA DO FIM DE CURSO
@@ -226,9 +214,9 @@ void voltarUmPoquinho(){
   estaRecolhendo = 0;
   apagarLedVermelho();
   acenderLedVerde();
-  verificarStatus();
-  
+  verificarStatus(); 
 }
+
 //VERIFICA STATUS CORRENTE DA MAQUINA
 void verificarStatus(){
      if(estaRecolhendo == 1){
@@ -303,5 +291,3 @@ void tocarBuz(){
   delay(500);
   noTone(buzzer);
 }
-
-//bug bot parar
