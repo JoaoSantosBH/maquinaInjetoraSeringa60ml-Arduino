@@ -27,5 +27,6 @@ Listagem dos componentes necessários:</br>
 <li>2 porcas sextavadas 5mm</li>
 <li>1 protoboard</li>
 <li>1 fonte 12V 1A</li>
+<li>1 chapa mdf 300mm x 50mm x 6mm</li>
 <li>1 rolamento 2.2cm ø</li>
 </ul>
