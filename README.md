@@ -19,7 +19,7 @@ Listagem dos componentes necessários:</br>
 <li>5 resistores 100Ω</li>
 <li>1 capacitor eletrolitico 100µF 16V</li>
 <li>1 motor passo nema 14</li>
-<li>1 drive A4988</li>
+<li>1 drive A4988 (necessário regular a corrente para 0.7 A)</li>
 <li>1 seringa 60ml</li>
 <li>1 estrutura base maquina (projeto 3D para impressão em anexo)</li>
 <li>1 Acoplamento Flexivel/cnc/motor Passo 5x5 Mm</li>
