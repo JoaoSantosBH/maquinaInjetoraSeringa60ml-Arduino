@@ -63,6 +63,7 @@ pinMode(pino_enable, OUTPUT);
 motorPasso.move(0);
 digitalWrite(pino_enable, HIGH);
 
+apagarLedVermelho();
 acenderLedVerde();
 //INICIA COMUNICACAO SERIAL
 Serial.begin(9600);
@@ -105,9 +106,10 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
     }
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           if(estaInjetando == 1  && estaAguardando == 0 && estaRecolhendo== 0){
-             pararMaquina();     
-           }
+           //if(estaInjetando == 1 ){
+             pararMaquina();    
+             Serial.print("PARAR"); 
+          // }
        }
      motorPasso.run();
 }
@@ -167,7 +169,7 @@ void pararMotorPassoInjecao(){
   Serial.println("A INJECAO ACABOU");
   estaInjetando  = 0;
   estaAguardando = 1; 
-  estaRecolhendo = 1;
+  estaRecolhendo = 0;
   motorPasso.move(0);
   digitalWrite(pino_enable, HIGH);
   tocarBuz();
@@ -221,12 +223,15 @@ void voltarUmPoquinho(){
 void verificarStatus(){
      if(estaRecolhendo == 1){
     Serial.println("Status esta Recolhendo");
+    Serial.println(estadoBotaoParar);
    }
    if(estaInjetando == 1){
     Serial.println("Status esta Injetando");
+    Serial.println(estadoBotaoParar);
    }
    if(estaAguardando == 1){
     Serial.println("Status esta Aguardando");
+    Serial.println(estadoBotaoParar);
    }
 }
 
@@ -272,7 +277,7 @@ void tocarBuz(){
   noTone(buzzer);
   delay(50);
   tone(buzzer,2220);   
-  delay(500);
+  delay(500); 
   tone(buzzer,2369);   
   delay(250);
   tone(buzzer,1850);   
