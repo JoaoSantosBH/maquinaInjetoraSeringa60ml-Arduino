@@ -4,7 +4,8 @@
 //  https://github.com/JoaoSantosBH/
 //  joaomarcelo.ms@gmail.com
 //  fev/2017
-//detectar forca de giro para possivel entupimento do sistema
+// A IMPLEMENTAR:
+// 01- detectar forca de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
@@ -75,41 +76,41 @@ Serial.print("Maquina inicializada");
 void loop() {
 
 //LER ESTADO ATUA DOS COMPONENTES 
-estadoFimInjCompleto = digitalRead(fimCursoInjecaoCompleto);
-estadoBotaoInje = digitalRead(botInjetar);
-estadoBotaoRecolhe = digitalRead(botRecolher); 
-estadoBotaoParar = digitalRead(botParar);
-estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
+estadoFimInjCompleto    = digitalRead(fimCursoInjecaoCompleto);
+estadoBotaoInje         = digitalRead(botInjetar);
+estadoBotaoRecolhe      = digitalRead(botRecolher); 
+estadoBotaoParar        = digitalRead(botParar);
+estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
 
-  //CASO BOTAO INICIAR APERTADO
+  //CASO BOTAO VERDE INICIAR APERTADO
   if (estadoBotaoInje == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 0){
           iniciarInjecao();
        }
     } 
-  //NO CASO DE FIM DE CURSO INJECAO COMPLETA PARAR MOTOR DE PASSO
+  //NO CASO DE FIM DE CURSO INJECAO COMPLETA 
    if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
        }
     } 
- //CASO BOTAO RECOLHER APERTADO
+ //CASO BOTAO AZUL RECOLHER APERTADO
    if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
       if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 0){
           recolherCursor();
         }
     }
- //NO CASO DE FIM DE CURSO RECOLHIMENTO COMPLETO PARAR MOTOR DE PASSO
+ //CASO FIM DE CURSO RECOLHIMENTO COMPLETO 
     if (estadoFimRecolhimento == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo== 1){
           pararMotorPassoRecolhimento();  
        }
     }
- //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
+ //CASO BOTAO VERMELHO PARAR APERTADO 
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           if(estaInjetando == 1 ){
+           if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
              pararMaquina();    
-             Serial.print("PARAR"); 
+
            }
        }
      motorPasso.run();
@@ -204,7 +205,6 @@ void pararMotorPassoRecolhimento(){
   apagarLedVerde();
   delay(500);
   voltarUmPoquinho();
-  verificarStatus();
 }
 
 //FUNCAO QUE RECOLHE EMBOLO PARA NAO COLIDIR COM MOLA DO FIM DE CURSO
@@ -224,15 +224,18 @@ void voltarUmPoquinho(){
 void verificarStatus(){
      if(estaRecolhendo == 1){
     Serial.println("Status esta Recolhendo");
-    Serial.println(estadoBotaoParar);
-   }
+    String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
+    Serial.println(message );
+     }
    if(estaInjetando == 1){
     Serial.println("Status esta Injetando");
-    Serial.println(estadoBotaoParar);
+    String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
+    Serial.println(message );
    }
    if(estaAguardando == 1){
     Serial.println("Status esta Aguardando");
-    Serial.println(estadoBotaoParar);
+    String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
+    Serial.println(message );
    }
 }
 
@@ -297,13 +300,14 @@ void tocarBuz(){
   delay(500);
   noTone(buzzer);
 }
-//    T A B E L A   V E R D A D E   d o  S  T A T U S da maquina
+//    T A B E L A   V E R D A D E   d o  S T A T U S da maquina
+//
 //  LEGENDA : Esta Injetando = EI  Esta Aguardando = EA   Esta Recolhendo = ER
 //
 // _______________________________  EI  | EA  | ER
 // (00) ESTADO INICIAL DA MAQUINA |  0  |  1  |  0  |
 //__________________________________________________|
-// (01)  INICIAR INJECAO          |  1  |  0  |  0  |
+// (01) INICIAR INJECAO           |  1  |  0  |  0  |
 //__________________________________________________|
 // (02) FIM CURSO ACABOU INJECAO  |  0  |  1  |  0  |
 //__________________________________________________|
