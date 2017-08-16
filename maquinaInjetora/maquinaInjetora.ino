@@ -4,7 +4,7 @@
 //  https://github.com/JoaoSantosBH/
 //  joaomarcelo.ms@gmail.com
 //  fev/2017
-
+//detectar forca de giro para possivel entupimento do sistema
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
@@ -42,6 +42,7 @@ int estadoFimRecolhimento =  0;
 int estaInjetando  = 0;
 int estaAguardando = 1;
 int estaRecolhendo = 0;
+int estaPausada    = 0;//POR ENQUANTO EM DESUSO
 
 //detecta o tempo desde que o botão foi apertado
 unsigned long changeTime; 
@@ -94,7 +95,7 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
     } 
  //CASO BOTAO RECOLHER APERTADO
    if (estadoBotaoRecolhe == HIGH && (millis() - changeTime)> 5000){
-      if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 1){
+      if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo== 0){
           recolherCursor();
         }
     }
@@ -106,10 +107,10 @@ estadoFimRecolhimento = digitalRead(fimCursoRecolhimentoCompleto);
     }
  //NO CASO DE BOTAO PARAR APERTADO PARAR MOTOR DE PASSO
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           //if(estaInjetando == 1 ){
+           if(estaInjetando == 1 ){
              pararMaquina();    
              Serial.print("PARAR"); 
-          // }
+           }
        }
      motorPasso.run();
 }
@@ -296,3 +297,18 @@ void tocarBuz(){
   delay(500);
   noTone(buzzer);
 }
+//    T A B E L A   V E R D A D E   d o  S  T A T U S da maquina
+//  LEGENDA : Esta Injetando = EI  Esta Aguardando = EA   Esta Recolhendo = ER
+//
+// _______________________________  EI  | EA  | ER
+// (00) ESTADO INICIAL DA MAQUINA |  0  |  1  |  0  |
+//__________________________________________________|
+// (01)  INICIAR INJECAO          |  1  |  0  |  0  |
+//__________________________________________________|
+// (02) FIM CURSO ACABOU INJECAO  |  0  |  1  |  0  |
+//__________________________________________________|
+// (03) RECOLHER CURSOR           |  0  |  0  |  1  |
+//__________________________________________________|
+// (04) FIM CURSO RECOLHIMENTO    |  0  |  1  |  0  |
+//__________________________________________________|
+
