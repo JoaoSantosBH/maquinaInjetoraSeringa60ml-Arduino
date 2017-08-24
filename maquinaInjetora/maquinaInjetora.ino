@@ -18,7 +18,7 @@ int botRecolher =                   10;
 int fimCursoInjecaoCompleto =        9;
 int fimCursoRecolhimentoCompleto =   8;
 int ledVermelho =                    7;
-int botParar =                       6;
+int botParar =                       2;
 
 // Definicao pino ENABLE MOTOR PASSO
 int pino_enable = 5;
@@ -43,7 +43,6 @@ int estadoFimRecolhimento =  0;
 int estaInjetando  = 0;
 int estaAguardando = 1;
 int estaRecolhendo = 0;
-int estaPausada    = 0;//POR ENQUANTO EM DESUSO
 
 //detecta o tempo desde que o botão foi apertado
 unsigned long changeTime; 
@@ -52,10 +51,10 @@ unsigned long changeTime;
 void setup() {
 
 pinMode(botInjetar,INPUT);
+pinMode(botRecolher,INPUT);
 pinMode(botParar, INPUT);
 pinMode(fimCursoInjecaoCompleto, INPUT);
-pinMode(fimCursoRecolhimentoCompleto,INPUT);
-pinMode(botRecolher,INPUT);                     
+pinMode(fimCursoRecolhimentoCompleto,INPUT);                     
 pinMode(ledVerde,OUTPUT);
 pinMode(ledVermelho, OUTPUT);
 pinMode(buzzer,OUTPUT);
@@ -76,11 +75,12 @@ Serial.print("Maquina inicializada");
 void loop() {
 
 //LER ESTADO ATUA DOS COMPONENTES 
-estadoFimInjCompleto    = digitalRead(fimCursoInjecaoCompleto);
 estadoBotaoInje         = digitalRead(botInjetar);
 estadoBotaoRecolhe      = digitalRead(botRecolher); 
 estadoBotaoParar        = digitalRead(botParar);
+estadoFimInjCompleto    = digitalRead(fimCursoInjecaoCompleto);
 estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
+
 
   //CASO BOTAO VERDE INICIAR APERTADO
   if (estadoBotaoInje == HIGH && (millis() - changeTime)> 5000){
@@ -88,7 +88,7 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
           iniciarInjecao();
        }
     } 
-  //NO CASO DE FIM DE CURSO INJECAO COMPLETA 
+  //CASO FIM DE CURSO INJECAO COMPLETA 
    if (estadoFimInjCompleto == HIGH && (millis() - changeTime)> 5000){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMotorPassoInjecao();  
@@ -108,16 +108,20 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
     }
  //CASO BOTAO VERMELHO PARAR APERTADO 
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
-           if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
-             pararMaquina();    
+        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
+             //pararMaquina();
+             pararMotorPassoInjecao();    
+        }
+    }
 
-           }
-       }
+       
      motorPasso.run();
+
+     
 }
 
   
-//FUNCOES DO APARELHO
+//FUNCOES DA MAQUINA INJETORA
 void acenderLedVerde(){
   digitalWrite(ledVerde, HIGH);
 }
@@ -132,7 +136,7 @@ void apagarLedVermelho(){
 }
 
 
-//METODOS DA MAQUINA
+//M E T O D O S  D  A   M A Q U I N A
 
 //INICIA A INJECAO
 void iniciarInjecao(){
@@ -187,8 +191,6 @@ void pararMaquina(){
   estaAguardando = 1; 
   estaRecolhendo = 0;
   motorPasso.move(0);
-  motorPasso.setMaxSpeed(150);
-  motorPasso.setSpeed(150);
   digitalWrite(pino_enable, HIGH);
   acenderLedVermelho();
   apagarLedVerde();
@@ -217,28 +219,28 @@ void voltarUmPoquinho(){
   estaRecolhendo = 0;
   apagarLedVermelho();
   acenderLedVerde();
-  verificarStatus(); 
+  verificarStatus();
 }
 
 //VERIFICA STATUS CORRENTE DA MAQUINA
 void verificarStatus(){
      if(estaRecolhendo == 1){
-    Serial.println("Status esta Recolhendo");
+    Serial.println("Maquina esta Recolhendo");
     String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
     Serial.println(message );
      }
    if(estaInjetando == 1){
-    Serial.println("Status esta Injetando");
+    Serial.println("Maquina esta Injetando");
     String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
     Serial.println(message );
    }
    if(estaAguardando == 1){
-    Serial.println("Status esta Aguardando");
+    Serial.println("Maquina esta Aguardando");
     String message = (String) "BP = " + estadoBotaoParar +  ", EI = " + estaInjetando + ", EA = " + estaAguardando + ", ER = " + estaRecolhendo + " .";
     Serial.println(message );
    }
 }
-
+// A  L E R T A   S O N O R O
 // THE IMPERIAL MARCH - John Williams
 void tocarBuz(){   
   tone(buzzer,1500);   
@@ -314,5 +316,7 @@ void tocarBuz(){
 // (03) RECOLHER CURSOR           |  0  |  0  |  1  |
 //__________________________________________________|
 // (04) FIM CURSO RECOLHIMENTO    |  0  |  1  |  0  |
+//__________________________________________________|
+// (05) PAUSAR MAQUINA            |  0  |  1  |  0  |
 //__________________________________________________|
 
