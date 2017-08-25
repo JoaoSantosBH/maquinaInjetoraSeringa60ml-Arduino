@@ -111,8 +111,7 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
  //CASO BOTAO VERMELHO PARAR APERTADO 
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
         if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
-             pararMaquina();
-                 
+             pararMaquina();      
         }
     }
 
@@ -123,7 +122,8 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
 }
 
   
-//FUNCOES DA MAQUINA INJETORA
+//F U N C O E S  D A   M  A Q U I N A I  N J E T O R A
+
 void acenderLedVerde(){
   digitalWrite(ledVerde, HIGH);
 }
@@ -137,8 +137,6 @@ void apagarLedVermelho(){
   digitalWrite(ledVermelho, LOW);
 }
 
-
-//M E T O D O S  D  A   M A Q U I N A
 
 //INICIA A INJECAO
 void iniciarInjecao(){
