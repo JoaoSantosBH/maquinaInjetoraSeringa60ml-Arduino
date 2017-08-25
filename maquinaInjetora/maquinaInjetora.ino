@@ -7,6 +7,8 @@
 // A IMPLEMENTAR:
 // 01- detectar forca de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
 
+// VERSAO 1.0.0
+
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
 
@@ -109,8 +111,8 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
  //CASO BOTAO VERMELHO PARAR APERTADO 
     if (estadoBotaoParar == HIGH && (millis() - changeTime)> 5000){
         if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
-             //pararMaquina();
-             pararMotorPassoInjecao();    
+             pararMaquina();
+                 
         }
     }
 
@@ -213,7 +215,7 @@ void pararMotorPassoRecolhimento(){
 void voltarUmPoquinho(){
   Serial.println("INICIANDO RETORNO POSICAO ZERO");
   digitalWrite(pino_enable, LOW);
-  motorPasso.move(-1500);
+  motorPasso.move(-1000);
   estaInjetando  = 0;
   estaAguardando = 1; 
   estaRecolhendo = 0;
