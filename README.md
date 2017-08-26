@@ -29,4 +29,5 @@ Listagem dos componentes necessários:</br>
 <li>1 fonte 12V 1A</li>
 <li>1 chapa mdf 300mm x 50mm x 6mm</li>
 <li>1 rolamento 2.2cm ø</li>
+<li>Kit Jumpers Macho-Macho</li>
 </ul>
