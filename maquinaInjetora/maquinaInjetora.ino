@@ -6,6 +6,8 @@
 //  fev/2017
 // A IMPLEMENTAR:
 // 01- detectar forca de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
+// LED RGB para economizar portas
+// redutor de tensão para derivar 12v para 3.3
 
 // VERSAO 1.0.0
 
@@ -13,14 +15,14 @@
 #include <AccelStepper.h>
 
 //DECLARANDO OS COMPONENTES DA MAQUINA INJETORA
-int ledVerde =                      13;
-int buzzer =                        12;
-int botInjetar =                    11;
-int botRecolher =                   10;
-int fimCursoInjecaoCompleto =        9;
-int fimCursoRecolhimentoCompleto =   8;
-int ledVermelho =                    7;
-int botParar =                       2;
+int ledVerde                     = 13;
+int buzzer                       = 12;
+int botInjetar                   = 11;
+int botRecolher                  = 10;
+int fimCursoInjecaoCompleto      =  9;
+int fimCursoRecolhimentoCompleto =  8;
+int ledVermelho                  =  7;
+int botParar                     =  6;
 
 // Definicao pino ENABLE MOTOR PASSO
 int pino_enable = 5;
@@ -62,7 +64,7 @@ pinMode(ledVermelho, OUTPUT);
 pinMode(buzzer,OUTPUT);
 pinMode(pino_enable, OUTPUT);
 
-// Configuracoes iniciais motor de passo INICIAR PARADO
+// Configuracoes iniciais motor de passo - INICIAR PARADO
 motorPasso.move(0);
 digitalWrite(pino_enable, HIGH);
 
@@ -114,15 +116,13 @@ estadoFimRecolhimento   = digitalRead(fimCursoRecolhimentoCompleto);
              pararMaquina();      
         }
     }
-
-       
+     
      motorPasso.run();
-
      
 }
 
   
-//F U N C O E S  D A   M  A Q U I N A I  N J E T O R A
+//F U N C O E S  D A   M A Q U I N A I  N J E T O R A
 
 void acenderLedVerde(){
   digitalWrite(ledVerde, HIGH);
@@ -154,7 +154,7 @@ void iniciarInjecao(){
   verificarStatus();
 }
 
-//INICIA O RECOLHIMENTO DO trilHO
+//INICIA O RECOLHIMENTO DO TRIlHO
 void recolherCursor(){
   estaInjetando  = 0;
   estaAguardando = 0; 
@@ -240,7 +240,7 @@ void verificarStatus(){
     Serial.println(message );
    }
 }
-// A  L E R T A   S O N O R O
+// A L E R T A   S O N O R O
 // THE IMPERIAL MARCH - John Williams
 void tocarBuz(){   
   tone(buzzer,1500);   
