@@ -6,8 +6,9 @@
 //  fev/2017
 // A IMPLEMENTAR:
 // 01- detectar forca de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
-// LED RGB para economizar portas
+// LED RGB para reduzir uma entrada
 // redutor de tensão para derivar 12v para 3.3
+//Colocar display RGB
 
 // VERSAO 1.0.0
 
