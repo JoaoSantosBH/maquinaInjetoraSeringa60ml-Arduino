@@ -42,15 +42,15 @@ int estadoBotaoParar =       0;
 int estadoFimInjCompleto =   0;
 int estadoFimRecolhimento =  0;
 
-//VARIAVEL QUE DETECTA SE A MAQUINA ESTA EM FUNCIONAMENTO
+//VARIAVEIS QUE DETECTAM ESTADOS DE FUNCIONAMENTO
 int estaInjetando  = 0;
 int estaAguardando = 1;
 int estaRecolhendo = 0;
 
-//detecta o tempo desde que o botão foi apertado
+//DETECTA TEMPO EM QUE BOTAO FOI PRESSIONADO
 unsigned long changeTime; 
 
-//DEFININDO O SETUP DOS COMPONENTES
+//SETUP DOS COMPONENTES
 void setup() {
 
 pinMode(botInjetar,INPUT);
@@ -63,7 +63,7 @@ pinMode(ledVermelho, OUTPUT);
 pinMode(buzzer,OUTPUT);
 pinMode(pino_enable, OUTPUT);
 
-// Configuracoes iniciais motor de passo - INICIAR PARADO
+// CONFIGURTACOES INICIAIS MOTOR PASSO - INICIAR PARADO
 motorPasso.move(0);
 digitalWrite(pino_enable, HIGH);
 
@@ -77,7 +77,7 @@ Serial.print("Maquina inicializada");
 
 void loop() {
 
-//LER ESTADO ATUA DOS COMPONENTES 
+//LER ESTADO DOS COMPONENTES 
 estadoBotaoInje         = digitalRead(botInjetar);
 estadoBotaoRecolhe      = digitalRead(botRecolher); 
 estadoBotaoParar        = digitalRead(botParar);
@@ -221,7 +221,8 @@ void voltarUmPoquinho(){
   verificarStatus();
 }
 
-//VERIFICA STATUS CORRENTE DA MAQUINA
+//VERIFICA STATUS CORRENTE DA MAQUINA - IMPRESSAO NA SERIAL PARA MONITORAMENTO DO FUNCIONAMENTO
+//PODE SER SUPRIMIDA CASO DESEJADO
 void verificarStatus(){
      if(estaRecolhendo == 1){
     Serial.println("Maquina esta Recolhendo");
