@@ -6,7 +6,7 @@
 //  fev/2017
 // A IMPLEMENTAR:
 // 01- detectar torque do motor de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
-usando sensor de peso no mecanismo que empuraa o embolo
+//usando sensor de peso no mecanismo que empuraa o embolo
 
 // VERSAO 1.0.0
 
