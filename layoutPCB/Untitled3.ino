@@ -1,11 +1,12 @@
 //  MAQUINA INJETORA DE DIETA VIA SERINGA 60ML
-//  BY JO√ÉO SANTOS 
+//  BY JO√O SANTOS 
 //  https://www.linkedin.com/in/joaomarceloms
 //  https://github.com/JoaoSantosBH/
 //  joaomarcelo.ms@gmail.com
 //  fev/2017
 // A IMPLEMENTAR:
 // 01- detectar torque do motor de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
+usando sensor de peso no empurrador do embolo
 
 // VERSAO 1.0.0
 
@@ -46,7 +47,7 @@ int estaInjetando  = 0;
 int estaAguardando = 1;
 int estaRecolhendo = 0;
 
-//detecta o tempo desde que o bot√£o foi apertado
+//detecta o tempo desde que o bot„o foi apertado
 unsigned long changeTime; 
 
 //DEFININDO O SETUP DOS COMPONENTES
@@ -317,4 +318,3 @@ void tocarBuz(){
 //__________________________________________________|
 // (05) PAUSAR MAQUINA            |  0  |  1  |  0  |
 //__________________________________________________|
-
