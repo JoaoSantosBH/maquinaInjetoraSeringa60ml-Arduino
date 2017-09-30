@@ -4,9 +4,9 @@
 //  https://github.com/JoaoSantosBH/
 //  joaomarcelo.ms@gmail.com
 //  fev/2017
-// A IMPLEMENTAR:
+// A IMPLEMENTAR na versão de luxo:
 // 01- detectar torque do motor de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
-//usando sensor de peso no mecanismo que empuraa o embolo
+//usando sensor de peso no mecanismo que empuraa o embolo, colocar Led unico RGB, Display LCD
 
 // VERSAO 1.0.0
 
