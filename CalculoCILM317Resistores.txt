@@ -1,0 +1,16 @@
+FONTE 12V 1A
+Transformar 12V para 5V
+12 -5 = 7V
+LEI DE OHM Ω
+
+R = V/I
+Devido ao ajuste do drive do motor de passo para uma corrente de 0.06A ou seja 60mA
+vamos considerar I= 0.06
+Logo
+
+R1
+12/0.06 = 200Ω
+
+R2 
+7/0.1 = 70Ω
+
