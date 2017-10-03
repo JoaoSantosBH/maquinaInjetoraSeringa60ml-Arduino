@@ -1,12 +1,16 @@
 //  MAQUINA INJETORA DE DIETA VIA SERINGA 60ML
-//  BY JOÃO SANTOS 
-//  https://www.linkedin.com/in/joaomarceloms
-//  https://github.com/JoaoSantosBH/
-//  joaomarcelo.ms@gmail.com
-//  fev/2017
-// A IMPLEMENTAR na versão de luxo:
+
+
+// A IMPLEMENTAR 
 // 01- detectar torque do motor de giro para possivel entupimento do sistema E PAUSAR A MAQUINA
-//usando sensor de peso no mecanismo que empuraa o embolo, colocar Led unico RGB, Display LCD
+//usando sensor de peso no mecanismo que empuraa o embolo, 
+// 02- colocar Led unico RGB, 
+// 03- Display LCD, 
+// 04 -mudar musica, colocar uma melodia para cada estado
+// 05- refatorar codigo em função das portas analógicas, 
+// 06- redefinir estrutura
+// 07- imlpementar luz led inicialização sweep cores
+
 
 // VERSAO 1.0.0
 
@@ -30,7 +34,7 @@ int pino_enable = 5;
 AccelStepper motorPasso(1,4,3 );
 
 //DEFINE QUANTIDADE GIROS DO MOTOR, 
-//COMO TEMOS UM FIM DE CURSO IMPLEMENTEI UM NUMERO MUITO GRANDE DE VOLTAS
+//COMO HÁ UM FIM DE CURSO IMPLEMENTOU_SE UM NUMERO MUITO GRANDE DE VOLTAS
 long passo = 1000000;
 
 //VARIAVEIS QUE VAO DETECTAR O ESTADO DE CADA BOTAO
@@ -69,6 +73,7 @@ digitalWrite(pino_enable, HIGH);
 
 apagarLedVermelho();
 acenderLedVerde();
+
 //INICIA COMUNICACAO SERIAL
 Serial.begin(9600);
 Serial.print("Maquina inicializada");
@@ -317,6 +322,6 @@ void tocarBuz(){
 //__________________________________________________|
 // (04) FIM CURSO RECOLHIMENTO    |  0  |  1  |  0  |
 //__________________________________________________|
-// (05) PAUSAR MAQUINA            |  0  |  1  |  0  |
+// (05) PARAR MAQUINA            |  0  |  1  |  0  |
 //__________________________________________________|
 
