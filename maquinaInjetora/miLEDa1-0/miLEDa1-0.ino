@@ -5,8 +5,10 @@
 // 02 -mudar musica, colocar uma melodia para cada estado
 // 03- redefinir estrutura - empurrador embolo - saida da seringa pela parte superior, reduzir copro, 
 
-//06-10-2017
+// 06-10-2017
 // VERSAO 1.1.0
+// João Santos      joaomarcelo.ms@gmail.com
+// Edwaldo Queiroz  
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
