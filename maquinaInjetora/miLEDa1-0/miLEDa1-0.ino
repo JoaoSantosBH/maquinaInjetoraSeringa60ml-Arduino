@@ -7,7 +7,8 @@
 
 // 06-10-2017
 // VERSAO 1.1.0
-// João Santos      joaomarcelo.ms@gmail.com
+//Projetada por:
+// João Santos      
 // Edwaldo Queiroz  
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
