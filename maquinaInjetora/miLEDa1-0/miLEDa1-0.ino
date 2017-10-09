@@ -1,9 +1,9 @@
 //  MAQUINA INJETORA DE DIETA VIA SERINGA 60ML
 
 // A IMPLEMENTAR 
-// 01- detectar possivel entupimento do sistema usando sensor de peso no mecanismo que empuraa o embolo,E PAUSAR A MAQUINA
-// 02 -mudar musica, colocar uma melodia para cada estado
-// 03- redefinir estrutura - empurrador embolo - saida da seringa pela parte superior, reduzir copro, 
+// 00 -colocar mola com pushButton na estrutura, para atuar como prevenção de possível entupimento
+// 01 -mudar musica, colocar uma melodia para fim de injeção
+// 02- redefinir estrutura - empurrador embolo meia lua - saida da seringa pela parte superior 45º, reduzir copro, 
 
 // 06-10-2017
 // VERSAO 1.1.0
