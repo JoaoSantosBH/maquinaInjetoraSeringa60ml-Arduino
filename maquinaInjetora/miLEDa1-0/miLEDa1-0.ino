@@ -1,11 +1,11 @@
 //  MAQUINA INJETORA DE DIETA VIA SERINGA 60ML
 
 // A IMPLEMENTAR 
-// 00 -colocar mola com pushButton na estrutura, para atuar como prevenção de possível entupimento
+// 
 // 01 -mudar musica, colocar uma melodia para fim de injeção
-// 02- redefinir estrutura - empurrador embolo meia lua - saida da seringa pela parte superior 45º, reduzir copro, 
+// 02 -colocar uma musica caso entupimento
 
-// 06-10-2017
+// 19-10-2017
 // VERSAO 1.1.0
 
 //Projetada por:
@@ -97,34 +97,38 @@ void loop() {
 estadoBotaoBarramento   = analogRead(botoes);
 
 //CASO BOTAO VERDE INICIAR APERTADO
-  if (estadoBotaoBarramento>=160 && estadoBotaoBarramento<170 ){
+  if (estadoBotaoBarramento>=130 && estadoBotaoBarramento<150 ){
        if(estaInjetando == 0 && estaAguardando ==1 && estaRecolhendo==0 
        && botI==1 && botR==0 && botP==0 && fcI==0 && fcR==0 ){       
           iniciarInjecao();
        }
     }  
 //CASO BOTAO VERMELHO PARAR APERTADO 
- else    if (estadoBotaoBarramento>=220 && estadoBotaoBarramento<240){//>=220 && estadoBotaoBarramento<240 
+ else    if (estadoBotaoBarramento>=159 && estadoBotaoBarramento<200){//>=220 && estadoBotaoBarramento<240 
         if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
           pararMaquina();      
         }
     }
 //CASO FIM DE CURSO RECOLHIMENTO COMPLETO 
-  else   if (estadoBotaoBarramento >=330 &&  estadoBotaoBarramento <350){//estadoBotaoBarramento >=670
+  else   if (estadoBotaoBarramento >=200 &&  estadoBotaoBarramento <300){//estadoBotaoBarramento >=670
        if(estaInjetando == 0 && estaAguardando ==0 && estaRecolhendo == 1 
        && botI==0 && botR==0 && botP==0 && fcI==0 && fcR==1){
           pararMotorPassoRecolhimento();  
        }
     }  
 //CASO FIM DE CURSO INJECAO COMPLETA 
-  else  if (estadoBotaoBarramento >=666){//>=330 && estadoBotaoBarramento<350
+  else  if (estadoBotaoBarramento >=301 && estadoBotaoBarramento<350){
        if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0 
        && botI==0 && botR==0 && botP==1 && fcI==1 && fcR==0){
           pararMotorPassoInjecao();  
        }
     }    
-
-    
+//CASO PRESSAO DA MAQUINA ATINJA ALTO NIVEL 
+  else  if (estadoBotaoBarramento >=666){//>=330 && estadoBotaoBarramento<350
+            if(estaInjetando == 1 && estaAguardando ==0 && estaRecolhendo== 0){
+                pararMaquinaPressao(); 
+       }
+    }        
      motorPasso.run();
      
 }
@@ -153,7 +157,7 @@ void iniciarInjecao(){
   verificarStatus();
 }
 
-//INICIA O RECOLHIMENTO DO TRIlHO
+//INICIAR O RECOLHIMENTO DO TRIlHO
 void recolherCursor(){
   estaInjetando  = 0;
   estaAguardando = 0; 
@@ -173,7 +177,7 @@ void recolherCursor(){
   verificarStatus();
 }
 
-//PARA INJECAO E EMITE ALERTA SONORO
+//PARAR INJECAO E EMITE ALERTA SONORO
 void pararMotorPassoInjecao(){
   Serial.println("A INJECAO ACABOU");
   acenderLuzMagenta();
@@ -191,7 +195,7 @@ void pararMotorPassoInjecao(){
   recolherCursor();
 }
 
-//PARA MAQUINA
+//PARAR MAQUINA
 void pararMaquina(){
   Serial.println(" MAQUINA PAUSADA");
   acenderLuzVermelha();
@@ -208,7 +212,25 @@ void pararMaquina(){
   verificarStatus();
 }
 
-// QUANDO ATINGE O FDC - PARA RECOLHIMENTO E EMITE ALERTA SONORO
+//PARAR MAQUINA CASO ENTUPIMENTO
+void pararMaquinaPressao(){
+  Serial.println(" MAQUINA PAUSADA");
+  Serial.println("a pressão atingiu niveis alarmantes"); 
+  acenderLuzVermelha();
+  estaInjetando  = 0;
+  estaAguardando = 1; 
+  estaRecolhendo = 0;
+  botI = 1;
+  botR = 0;
+  botP = 0;
+  fcI  = 0;
+  fcR  = 0;
+  motorPasso.move(0);
+  digitalWrite(pino_enable, HIGH);
+  verificarStatus();
+}
+
+// QUANDO ATINGE O FDC - PARAR RECOLHIMENTO E EMITE ALERTA SONORO
 void pararMotorPassoRecolhimento(){
   Serial.println("O RECOLHIMENTO CHEGOU AO FIM");
   acenderLuzBranca();
