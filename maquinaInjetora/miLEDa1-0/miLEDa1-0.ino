@@ -11,6 +11,7 @@
 //Projetada por:
 // João Santos      
 // Edwaldo Queiroz  
+// jE Maquinas Especiais Home Care
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
