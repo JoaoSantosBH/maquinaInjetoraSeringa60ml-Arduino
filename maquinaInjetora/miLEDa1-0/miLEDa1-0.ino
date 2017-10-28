@@ -2,10 +2,7 @@
 
 // A IMPLEMENTAR 
 // 
-// 01 -mudar musica, colocar uma melodia para fim de injeção
-// 02 -colocar uma musica caso entupimento
-
-// 19-10-2017
+// 28-10-2017
 // VERSAO 1.1.0
 
 //Projetada por:
@@ -178,7 +175,7 @@ void recolherCursor(){
   verificarStatus();
 }
 
-//PARAR INJECAO E EMITE ALERTA SONORO
+//PARAR INJECAO E RECOLHE MEMBOLO
 void pararMotorPassoInjecao(){
   Serial.println("A INJECAO ACABOU");
   acenderLuzMagenta();
@@ -228,6 +225,7 @@ void pararMaquinaPressao(){
   fcR  = 0;
   motorPasso.move(0);
   digitalWrite(pino_enable, HIGH);
+  tocarMarchaImperial();
   verificarStatus();
 }
 
@@ -235,7 +233,7 @@ void pararMaquinaPressao(){
 void pararMotorPassoRecolhimento(){
   Serial.println("O RECOLHIMENTO CHEGOU AO FIM");
   acenderLuzBranca();
-  tocarBuz();
+  tocarArpejoFeliz();
   motorPasso.move(0);
   digitalWrite(pino_enable, HIGH);
   delay(500);
@@ -376,9 +374,9 @@ void acenderLuzBranca(){
   }
 }
 
-// A L E R T A   S O N O R O
+// A L E R T A s  S O N O R Os
 // THE IMPERIAL MARCH - John Williams
-void tocarBuz(){   
+void tocarMarchaImperial(){   
   tone(buzzer,1500);   
   delay(500);
   noTone(buzzer);
@@ -438,6 +436,45 @@ void tocarBuz(){
   delay(500);
   noTone(buzzer);
 }
+void tocarArpejoFeliz(){
+  tone(buzzer,1046);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1318);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1567);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2093);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2637);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1046);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,1567);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2637);   
+  delay(125);
+  noTone(buzzer);
+  delay(50);
+  tone(buzzer,2093);   
+  delay(250);
+  noTone(buzzer);
+  delay(50);
+}
+
 
 //SUPRIMIDOS
  //CASO BOTAO AZUL RECOLHER APERTADO 
