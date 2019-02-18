@@ -5,10 +5,6 @@
 // 28-10-2017
 // VERSAO 1.1.0
 
-//Projetada por:
-// João Santos      
-// Edwaldo Queiroz  
-// jE Maquinas Especiais Home Care
 
 //IMPORTANDO BIBLIOTECA MOTOR PASSO
 #include <AccelStepper.h>
@@ -503,4 +499,3 @@ void tocarArpejoFeliz(){
 //__________________________________________________|
 // (05) PARAR MAQUINA            |  0  |  1  |  0  |
 //__________________________________________________|
-
