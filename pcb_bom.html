@@ -29,8 +29,8 @@ td {
 
 <body>
 <h1>Bill of Materials: pcb.fzz</h1>
-<p class="meta">/Users/joaosantos/Dropbox/arduino/maquinaInjetora/fritzing/pcb.fzz</p>
-<p class="meta">Saturday, September 30 2017, 12:06:48</p>
+<p class="meta">/home/joaosantos/DEV/maquina/maquinaInjetoraSeringa60ml-Arduino/fritzing/pcb.fzz</p>
+<p class="meta">domingo, março 10 2019, 18:48:37</p>
 
 <h2>Assembly List</h2>
 <table>
@@ -46,19 +46,23 @@ td {
   <tr>
     <td>A4988</td>
     <td>Pololu A4988</td>
-    <td class="props">package SO16; editable pin labels false; variant variant 2; chip label IC</td>
+    <td class="props">variant variant 2; package SO16; chip label IC; editable pin labels false</td>
 </tr><tr>
     <td>botIn</td>
     <td>Pushbutton</td>
     <td class="props">package [THT]</td>
 </tr><tr>
-    <td>botPa</td>
+    <td>botM</td>
     <td>Pushbutton</td>
     <td class="props">package [THT]</td>
 </tr><tr>
-    <td>botRec</td>
+    <td>botP</td>
     <td>Pushbutton</td>
     <td class="props">package [THT]</td>
+</tr><tr>
+    <td>BT1</td>
+    <td>Bluetooth HC-06d</td>
+    <td class="props">row single; variant variant 7; package THT; pin spacing 0.1in (2.54mm); pins 4</td>
 </tr><tr>
     <td>Buzzer</td>
     <td>Piezo Speaker</td>
@@ -66,7 +70,7 @@ td {
 </tr><tr>
     <td>C100µF</td>
     <td>Electrolytic Capacitor</td>
-    <td class="props">package 100 mil [THT, electrolytic]; capacitance 100µF; voltage 16V</td>
+    <td class="props">package 100 mil [THT, electrolytic]; voltage 16V; capacitance 100µF</td>
 </tr><tr>
     <td>FCinj</td>
     <td>Toggle Switch</td>
@@ -76,21 +80,21 @@ td {
     <td>Toggle Switch</td>
     <td class="props">package THT; switching circuit SPDT</td>
 </tr><tr>
+    <td>J1</td>
+    <td>Power Jack</td>
+    <td class="props">package power_jack_combo; variant combo; type 5.5mm barrel</td>
+</tr><tr>
+    <td>LED1</td>
+    <td>RGB LED (com. cathode, rgb)</td>
+    <td class="props">package 5 mm [THT]; pin order rgb; polarity common cathode; rgb RGB</td>
+</tr><tr>
     <td>LM317</td>
     <td>Voltage Regulator</td>
     <td class="props">package to220-adj; variant sink; voltage 1.25 – 36 V; chip LM317; part # LM</td>
 </tr><tr>
-    <td>LV</td>
-    <td>Green (570nm) LED</td>
-    <td class="props">package 5 mm [THT]; color Green (570nm); leg yes</td>
-</tr><tr>
-    <td>Lvm</td>
-    <td>Red (633nm) LED</td>
-    <td class="props">package 3 mm [THT]; color Red (633nm); leg yes</td>
-</tr><tr>
     <td>Nema14</td>
     <td>Stepper Motor - Bipolar</td>
-    <td class="props">holding torque  2.4 kg*cm; detent torque 120 g*cm; phase 2; size 42.3 x 42.3 x 37.0 mm; stepper type Bipolar; voltage 15.4; shaft 5 mm diameter / 33 mm length; step angle 1.8; current 0.28 A</td>
+    <td class="props">current 0.28 A; voltage 15.4; detent torque 120 g*cm; step angle 1.8; holding torque  2.4 kg*cm; size 42.3 x 42.3 x 37.0 mm; phase 2; stepper type Bipolar; shaft 5 mm diameter / 33 mm length</td>
 </tr><tr>
     <td>Part1</td>
     <td>Arduino Uno (Rev3)</td>
@@ -98,39 +102,55 @@ td {
 </tr><tr>
     <td>R220</td>
     <td>220Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 220Ω</td>
-</tr><tr>
-    <td>R3lVerd</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 220Ω; pin spacing 400 mil</td>
 </tr><tr>
     <td>R68Ω</td>
     <td>68Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 68Ω</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 68Ω; pin spacing 400 mil</td>
 </tr><tr>
-    <td>Rbi100Ω</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td>Rb1</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
 </tr><tr>
-    <td>Rbp100Ω</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td>Rb2</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
 </tr><tr>
-    <td>Rbr100Ω</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td>Rb3</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
 </tr><tr>
-    <td>RfimInje</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td>Rb4</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
 </tr><tr>
-    <td>RFimRecol</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td>Rb5</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
 </tr><tr>
-    <td>RLver</td>
+    <td>Rhc06-01</td>
+    <td>330Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 330Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>Rhc06-2</td>
+    <td>330Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 330Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>Rhc06-3</td>
+    <td>330Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 330Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>Rlb</td>
     <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 100Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>Rlg</td>
+    <td>100Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 100Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>Rlr</td>
+    <td>100Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 100Ω; pin spacing 400 mil</td>
 </tr>
   </tbody>
 </table>
@@ -147,11 +167,15 @@ td {
 <tr>
     <td>1</td>
     <td>Pololu A4988</td>
-    <td class="props">package SO16; editable pin labels false; variant variant 2; chip label IC</td>
+    <td class="props">variant variant 2; package SO16; chip label IC; editable pin labels false</td>
 </tr><tr>
     <td>3</td>
     <td>Pushbutton</td>
     <td class="props">package [THT]</td>
+</tr><tr>
+    <td>1</td>
+    <td>Bluetooth HC-06d</td>
+    <td class="props">row single; variant variant 7; package THT; pin spacing 0.1in (2.54mm); pins 4</td>
 </tr><tr>
     <td>1</td>
     <td>Piezo Speaker</td>
@@ -159,27 +183,27 @@ td {
 </tr><tr>
     <td>1</td>
     <td>Electrolytic Capacitor</td>
-    <td class="props">package 100 mil [THT, electrolytic]; capacitance 100µF; voltage 16V</td>
+    <td class="props">package 100 mil [THT, electrolytic]; voltage 16V; capacitance 100µF</td>
 </tr><tr>
     <td>2</td>
     <td>Toggle Switch</td>
     <td class="props">package THT; switching circuit SPDT</td>
 </tr><tr>
     <td>1</td>
+    <td>Power Jack</td>
+    <td class="props">package power_jack_combo; variant combo; type 5.5mm barrel</td>
+</tr><tr>
+    <td>1</td>
+    <td>RGB LED (com. cathode, rgb)</td>
+    <td class="props">package 5 mm [THT]; pin order rgb; polarity common cathode; rgb RGB</td>
+</tr><tr>
+    <td>1</td>
     <td>Voltage Regulator</td>
     <td class="props">package to220-adj; variant sink; voltage 1.25 – 36 V; chip LM317; part # LM</td>
 </tr><tr>
     <td>1</td>
-    <td>Green (570nm) LED</td>
-    <td class="props">package 5 mm [THT]; color Green (570nm); leg yes</td>
-</tr><tr>
-    <td>1</td>
-    <td>Red (633nm) LED</td>
-    <td class="props">package 3 mm [THT]; color Red (633nm); leg yes</td>
-</tr><tr>
-    <td>1</td>
     <td>Stepper Motor - Bipolar</td>
-    <td class="props">holding torque  2.4 kg*cm; detent torque 120 g*cm; phase 2; size 42.3 x 42.3 x 37.0 mm; stepper type Bipolar; voltage 15.4; shaft 5 mm diameter / 33 mm length; step angle 1.8; current 0.28 A</td>
+    <td class="props">current 0.28 A; voltage 15.4; detent torque 120 g*cm; step angle 1.8; holding torque  2.4 kg*cm; size 42.3 x 42.3 x 37.0 mm; phase 2; stepper type Bipolar; shaft 5 mm diameter / 33 mm length</td>
 </tr><tr>
     <td>1</td>
     <td>Arduino Uno (Rev3)</td>
@@ -187,15 +211,23 @@ td {
 </tr><tr>
     <td>1</td>
     <td>220Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 220Ω</td>
-</tr><tr>
-    <td>7</td>
-    <td>100Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 100Ω</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 220Ω; pin spacing 400 mil</td>
 </tr><tr>
     <td>1</td>
     <td>68Ω Resistor</td>
-    <td class="props">package THT; bands 4; tolerance ±5%; pin spacing 400 mil; resistance 68Ω</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 68Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>5</td>
+    <td>10kΩ Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 10kΩ; pin spacing 400 mil</td>
+</tr><tr>
+    <td>3</td>
+    <td>330Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 330Ω; pin spacing 400 mil</td>
+</tr><tr>
+    <td>3</td>
+    <td>100Ω Resistor</td>
+    <td class="props">package THT; bands 4; tolerance ±5%; resistance 100Ω; pin spacing 400 mil</td>
 </tr>
   </tbody>
 </table>
