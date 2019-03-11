@@ -5,16 +5,16 @@ Prototipo de maquina injetora de dieta liquida com seringa 60ML desenvolvido com
 
 Projetada para infusão de dietas ricas em fibras e mais viscosas, em pacientes com restrição alimentar por via oral,</br>
  aumentando a qualidade alimentar do paciente, uma vez que permite alimentos mais viscosos e com isso mais ricos em fibras </br>
-e nutrientes, ao contrário das dietas industrializadas que se dão por equipamentos (Equipo) que facilmente entopem, impedindo o </br>
+e nutrientes, ao contrário das dietas industrializadas que se dão por equipamentos (Equipo) que facilmente entopem,</br> impedindo o 
 paciente de consumir dietas mais ricas em fibras e nutrientes;</br>
 
-A duração da infusão é programada em 3 minutos para 60 ml de dieta, com intuito de evitar ulceração no paciente, devido ao alimento </br>
+A duração da infusão é programada em 3 minutos para 60 ml de dieta, com intuito de evitar ulceração no paciente, devido ao </br>alimento 
 entrar muito rapidamente, como é o caso, quando aplicado à mão, e aumentar a absorção do alimento pelo organismo.</br>
 
 Neste caso a dieta pode ser ministrada lentamente, evitando o risco de ulcera e aumentando a absorção do alimento;</br>
 
 Através de um App ou do botão na máquina o paciente ou seu cuidador, pode iniciar a injeção alimentar, e ao final da injeção</br>
- a maquina automaticamente retorna a posição inicial para aguardar nova carga de alimento, gerando maior conforto para o paciente </br>
+ a maquina automaticamente retorna a posição inicial para aguardar nova carga de alimento, gerando maior conforto para o </br>paciente 
 e/ou seu cuidador</br>
 
 A máquina possui alertas visuais e sonoros para indicar seu status de funcionamento, e é portátil, podendo ser levada para onde for!</br>
