@@ -62,7 +62,7 @@ int  botR = 0;
 int  botP = 0;
 int  fcI  = 0;
 int  fcR  = 0;
-
+boolean bluetooth = false;
 //DETECTA TEMPO EM QUE BOTAO FOI PRESSIONADO
 unsigned long changeTime;
 
@@ -155,12 +155,17 @@ void loop() {
 
     if (estaInjetando == 0 && estaAguardando == 1 && estaRecolhendo == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
+          Serial.println("SE DA BLUETOOTH INI INJE ");
+          
       iniciarInjecao();
     }
   }
 
   else if (stringBluetooth == "TF") {
+//COLOCAR UM BOOLEANO AQUI
     if (estaInjetando == 1 && estaAguardando == 0 && estaRecolhendo == 0) {
+            Serial.println("SE DA BLUETOOTH PARA INJE ");
+
       pararMaquina();
     }
   }
@@ -193,6 +198,7 @@ void iniciarInjecao() {
   motorPasso.setSpeed(150);
   motorPasso.setAcceleration(150);//Novo
   digitalWrite(pino_enable, LOW);
+  stringBluetooth = "";
   motorPasso.move(-passo);
   verificarStatus();
 }
