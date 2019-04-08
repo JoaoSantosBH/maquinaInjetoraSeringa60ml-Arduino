@@ -150,11 +150,8 @@ void loop() {
       pararMaquinaPressao();
     }
   }
-  motorPasso.run();
-
-  
-// B L U E T O O T H 
-  if (stringBluetooth == "TO") {
+  // B L U E T O O T H 
+  else if (stringBluetooth == "TO") {
 
     if (estaInjetando == 0 && estaAguardando == 1 && estaRecolhendo == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
@@ -162,12 +159,16 @@ void loop() {
     }
   }
 
-  if (stringBluetooth == "TF") {
+  else if (stringBluetooth == "TF") {
     if (estaInjetando == 1 && estaAguardando == 0 && estaRecolhendo == 0) {
       pararMaquina();
     }
   }
 // B L U E T O O T H 
+  motorPasso.run();
+
+  
+
 
   
 }
