@@ -5,6 +5,7 @@
 
 // 10-03-2019
 // VERSAO 1.1.0
+// 15.03.2021
 
 #include <AccelStepper.h>
 #include "U8glib.h"
@@ -77,13 +78,13 @@ const uint8_t logo[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-
-int BUTTONS                   = A0;
-int BUZZER                    = 12;
-int BLUE                      = 11;
-int GREEN                     = 10;
-int RED                       =  9;
-int STEP_PIN_ENABLE           =  5;
+#define PRESSURE_SENSOR           A1
+#define BUTTONS                   A0
+#define BUZZER                    12
+#define BLUE                      11
+#define REEN                      10
+#define RED                        9
+#define STEP_PIN_ENABLE            5
 AccelStepper myStepMotor(1, 4, 3 );
 
 char command;
@@ -144,6 +145,7 @@ void loop() {
   readComponentStatus();
   checkPressedButtons();
   checkBluetoothCommands();
+  readInjectionPressure() ;
   myStepMotor.run();
 
 }
@@ -671,6 +673,28 @@ void settingWaitMotor() {
 void settingBackLittleMotor() {
   digitalWrite(STEP_PIN_ENABLE, LOW);
   myStepMotor.move(-1000);
+}
+
+void readInjectionPressure() {
+  fsrreading = analogRead(fsrpin);
+  // Print the string "Analog reading = ".
+  Serial.print("Analog reading = ");
+  // Print the fsrreading:
+  Serial.print(fsrreading);
+  // We can set some threshholds to display how much pressure is roughly applied:
+  if (fsrreading < 10) {
+    Serial.println(" - No pressure");
+  } else if (fsrreading < 200) {
+    Serial.println(" - Light touch");
+  } else if (fsrreading < 500) {
+    Serial.println(" - Light squeeze");
+  } else if (fsrreading < 600) {
+    Serial.println(" - Medium squeeze");
+  } else {
+    Serial.println(" - Big squeeze");
+    //PANIC
+    pressurePanic();
+  }
 }
 
 //ONLINE IMAGE TO C ARRAY https://littlevgl.com/image-to-c-array
