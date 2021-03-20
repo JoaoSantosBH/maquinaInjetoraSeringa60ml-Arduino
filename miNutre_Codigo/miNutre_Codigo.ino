@@ -1,11 +1,8 @@
 //  MAQUINA INJETORA DE DIETA VIA SERINGA 60ML
 
-// A IMPLEMENTAR
-// SENSOR DE PRESSAO PARA DETECTAR ENTUPIMENTO e prever possível estouro do sistema devido a pressão
-
 // 10-03-2019
 // VERSAO 1.1.0
-// 15.03.2021
+
 
 #include <AccelStepper.h>
 #include "U8glib.h"
@@ -82,7 +79,7 @@ const uint8_t logo[] PROGMEM = {
 #define BUTTONS                   A0
 #define BUZZER                    12
 #define BLUE                      11
-#define REEN                      10
+#define GREEN                      10
 #define RED                        9
 #define STEP_PIN_ENABLE            5
 AccelStepper myStepMotor(1, 4, 3 );
@@ -98,13 +95,8 @@ String START = "STARTIn";
 
 
 long myStepRevolutions = 1000000;
-
-//ARRAY DE CORES  PARA LED RGB
 int preto     [3]  = { 0, 0, 0 };
-
 int dimbranco [3]  = { 30, 30, 30};
-
-// SETANDO CORES INICIAIS LED RGB
 int redValue = preto[0];
 int greenValue = preto[1];
 int blueValue = preto[2];
@@ -113,19 +105,16 @@ int nRed = redValue;
 int nGreen = greenValue;
 int nBlue = blueValue;
 
-//VARIAVEIS QUE VAO DETECTAR O ESTADO DE CADA BOTAO DO BARRAMENTO
 int buttonBusStatus = 0;
-
-//VARIAVEIS QUE DETECTAM ESTADOS DE FUNCIONAMENTO
 int isInjecting  = 0;
 int isWaiting = 1;
 int isRecalling = 0;
-//VARIAVEIS QUE ISOLAM COMPONENTES DO BARRAMENTO
 int  botI = 1;
 int  botR = 0;
 int  botP = 0;
 int  fcI  = 0;
 int  fcR  = 0;
+int pressureReading;
 
 void setup() {
 
@@ -150,7 +139,6 @@ void loop() {
 
 }
 
-//F U N C O E S  D A   M A Q U I N A   I N J E T O R A
 
 void startInjection() {
   Serial.println("INICIANDO INJECAO");
@@ -162,7 +150,6 @@ void startInjection() {
   printStatusOnSerial();
 }
 
-//INICIAR O RECOLHIMENTO DO TRIlHO
 void pickupRecall() {
   Serial.println("RECOLHENDO CURSOR");
   settingRecallStatus();
@@ -172,7 +159,6 @@ void pickupRecall() {
   printStatusOnSerial();
 }
 
-//PARAR INJECAO E RECOLHE MEMBOLO
 void stopInjectionAndPickup() {
   Serial.println("A INJECAO ACABOU");
   turnOnVioletLight();
@@ -183,7 +169,6 @@ void stopInjectionAndPickup() {
   pickupRecall();
 }
 
-//PARAR MAQUINA
 void stopMachine() {
   Serial.println(" MAQUINA PAUSADA");
   turnOnRedLight();
@@ -193,7 +178,6 @@ void stopMachine() {
   printStatusOnSerial();
 }
 
-//PARAR MAQUINA CASO ENTUPIMENTO
 void pressurePanic() {
   Serial.println(" MAQUINA PAUSADA");
   Serial.println("a pressão atingiu niveis alarmantes");
@@ -205,7 +189,6 @@ void pressurePanic() {
   printStatusOnSerial();
 }
 
-// QUANDO ATINGE O FDC - PARAR RECOLHIMENTO E EMITE ALERTA SONORO
 void stopMotorAtPickup() {
   Serial.println("O RECOLHIMENTO CHEGOU AO FIM");
   turnOnWhiteLight();
@@ -217,7 +200,6 @@ void stopMotorAtPickup() {
   backALitle();
 }
 
-//FUNCAO QUE RECOLHE EMBOLO PARA NAO COLIDIR COM MOLA DO FIM DE CURSO
 void backALitle() {
   Serial.println("INICIANDO RETORNO POSICAO ZERO");
   turnOnGreenLight();
@@ -230,9 +212,7 @@ void backALitle() {
 
 }
 
-//realiza corsfade de luz
 void colorCrossFade(int cor[3]) {
-  // Convert to 0-255
   int R = (cor[0] * 255) / 100;
   int G = (cor[1] * 255) / 100;
   int B = (cor[2] * 255) / 100;
@@ -267,7 +247,6 @@ int calcColorSweep(int previousValue, int finalValue) {
 }
 
 int calculateValue(int sweep, int valor, int i) {
-
   if ((sweep) && i % sweep == 0) {
     if (sweep > 0) {
       valor += 1;
@@ -314,7 +293,6 @@ void turnOnWhiteLight() {
   digitalWrite(BLUE, 255);
 }
 
-// A L E R T A s  S O N O R Os
 // THE IMPERIAL MARCH - John Williams
 void playImperialMarch() {
   tone(BUZZER, 1500);
@@ -416,8 +394,6 @@ void playHappyMelody() {
   delay(50);
 }
 
-//OLED
-
 void drawInit() {
   u8g.firstPage();
   do {
@@ -429,7 +405,6 @@ void drawInit() {
     u8g.drawRFrame(0, 18, 128, 46, 4);
   } while ( u8g.nextPage() );
 }
-
 
 void drawInjet() {
   u8g.firstPage();
@@ -521,11 +496,9 @@ void setupInOut() {
 }
 
 void putMachineInReadyState() {
-  // CONFIGURTACOES INICIAIS MOTOR myStepRevolutions - INICIAR PARADO
   myStepMotor.move(0);
   digitalWrite(STEP_PIN_ENABLE, HIGH);
   colorCrossFade(dimbranco);
-  //INICIA COMUNICACAO SERIAL
   Serial.begin(9600);
   Serial.print("Maquina inicializada\n\n");
 }
@@ -535,37 +508,29 @@ void readComponentStatus() {
 }
 
 void checkPressedButtons() {
-  //CASO BOTAO VERDE INICIAR APERTADO
+  //BOTAO VERDE INICIAR
   if (buttonBusStatus >= 130 && buttonBusStatus < 150 ) {
     if (isInjecting == 0 && isWaiting == 1 && isRecalling == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
       startInjection();
     }
   }
-  //CASO BOTAO VERMELHO PARAR APERTADO
+  //BOTAO VERMELHO PARAR
   else    if (buttonBusStatus >= 159 && buttonBusStatus < 200) { //>=220 && buttonBusStatus<240
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0) {
       stopMachine();
     }
   }
-  //CASO FIM DE CURSO RECOLHIMENTO COMPLETO
   else   if (buttonBusStatus >= 200 &&  buttonBusStatus < 300) { //buttonBusStatus >=670
     if (isInjecting == 0 && isWaiting == 0 && isRecalling == 1
         && botI == 0 && botR == 0 && botP == 0 && fcI == 0 && fcR == 1) {
       stopMotorAtPickup();
     }
   }
-  //CASO FIM DE CURSO INJECAO COMPLETA
   else  if (buttonBusStatus >= 301 && buttonBusStatus < 350) {
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0
         && botI == 0 && botR == 0 && botP == 1 && fcI == 1 && fcR == 0) {
       stopInjectionAndPickup();
-    }
-  }
-  //CASO PRESSAO DA MAQUINA ATINJA ALTO NIVEL
-  else  if (buttonBusStatus >= 666) { //>=330 && buttonBusStatus<350
-    if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0) {
-      pressurePanic();
     }
   }
 }
@@ -676,19 +641,16 @@ void settingBackLittleMotor() {
 }
 
 void readInjectionPressure() {
-  fsrreading = analogRead(fsrpin);
+  pressureReading = analogRead(PRESSURE_SENSOR);
   // Print the string "Analog reading = ".
   Serial.print("Analog reading = ");
-  // Print the fsrreading:
-  Serial.print(fsrreading);
-  // We can set some threshholds to display how much pressure is roughly applied:
-  if (fsrreading < 10) {
+  if (pressureReading < 10) {
     Serial.println(" - No pressure");
-  } else if (fsrreading < 200) {
+  } else if (pressureReading < 200) {
     Serial.println(" - Light touch");
-  } else if (fsrreading < 500) {
+  } else if (pressureReading < 500) {
     Serial.println(" - Light squeeze");
-  } else if (fsrreading < 600) {
+  } else if (pressureReading < 600) {
     Serial.println(" - Medium squeeze");
   } else {
     Serial.println(" - Big squeeze");
