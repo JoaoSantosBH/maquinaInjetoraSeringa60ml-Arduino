@@ -216,7 +216,6 @@ void colorCrossFade(int cor[3]) {
   int R = (cor[0] * 255) / 100;
   int G = (cor[1] * 255) / 100;
   int B = (cor[2] * 255) / 100;
-
   int sweepRed = calcColorSweep(nRed, R);
   int sweepGreen = calcColorSweep(nGreen, G);
   int sweepBlue = calcColorSweep(nBlue, B);
@@ -225,11 +224,9 @@ void colorCrossFade(int cor[3]) {
     redValue = calculateValue(sweepRed, redValue, i);
     greenValue = calculateValue(sweepGreen, greenValue, i);
     blueValue = calculateValue(sweepBlue, blueValue, i);
-
     analogWrite(RED, redValue);   // Write current valorues to LED pins
     analogWrite(GREEN, greenValue);
     analogWrite(BLUE, blueValue);
-
     delay(10);
   }
   nRed = redValue;
@@ -642,19 +639,13 @@ void settingBackLittleMotor() {
 
 void readInjectionPressure() {
   pressureReading = analogRead(PRESSURE_SENSOR);
-  // Print the string "Analog reading = ".
-  Serial.print("Analog reading = ");
-  if (pressureReading < 10) {
-    Serial.println(" - No pressure");
-  } else if (pressureReading < 200) {
-    Serial.println(" - Light touch");
-  } else if (pressureReading < 500) {
-    Serial.println(" - Light squeeze");
-  } else if (pressureReading < 600) {
-    Serial.println(" - Medium squeeze");
-  } else {
-    Serial.println(" - Big squeeze");
-    //PANIC
+  // Diversos limiares
+  if (pressureReading < 10) {} 
+  else if (pressureReading < 200) {} 
+  else if (pressureReading < 500) {} 
+  else if (pressureReading < 600) {} 
+  else {
+    Serial.println(" - PANIC");
     pressurePanic();
   }
 }
