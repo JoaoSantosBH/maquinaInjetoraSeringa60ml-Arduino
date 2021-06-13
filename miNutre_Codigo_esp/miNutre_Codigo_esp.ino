@@ -5,8 +5,6 @@
 //mar 2021
 
 #include <AccelStepper.h>
-//#include "U8glib.h"
-//U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 #include <U8g2lib.h>
 U8G2_SSD1306_64X32_1F_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
@@ -80,12 +78,12 @@ const uint8_t logo[] PROGMEM = {
 #define DIR 2
 #define PRESSURE_SENSOR           A0
 #define BUTTONS                   A0
-#define BUZZER                    10
+#define BUZZER                    9
 #define BLUE                      13
 #define GREEN                      12
 #define RED                        14
-#define STEP_PIN_ENABLE            15
-AccelStepper myStepMotor(1, STEP, DIR );
+#define STEP_PIN_ENABLE            10
+AccelStepper myStepMotor(1, STEP,DIR );
 
 char command;
 String stringBluetooth;
@@ -97,7 +95,7 @@ String INJECT = "INJECTn";
 String START = "STARTIn";
 
 
-long myStepRevolutions = 1000000;
+long myStepRevolutions = 10000;
 int preto     [3]  = { 0, 0, 0 };
 int dimbranco [3]  = { 30, 30, 30};
 int redValue = preto[0];
@@ -118,11 +116,10 @@ int  botP = 0;
 int  fcI  = 0;
 int  fcR  = 0;
 int pressureReading;
-int incomingByte = 0;
-
 
 void setup() {
 
+ Serial.begin(115200);
   setupInOut();
   putMachineInReadyState();
   setupOled();
@@ -135,30 +132,18 @@ void setup() {
 
 void loop() {
 
-  bluetoothCommandsListener();
-  readComponentStatus();
-  checkPressedButtons();
-  checkBluetoothCommands();
-  readInjectionPressure() ;
-    //MOCK
-if (Serial.available() > 0) {
-    // read the incoming byte:
-    incomingByte = Serial.read();
-
-    // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte);
-
-    if(incomingByte == 49){
-        startInjection() ;
-        digitalWrite(STEP_PIN_ENABLE, LOW);
-    } else  if(incomingByte == 50){
-      stopInjectionAndPickup() ;
-      digitalWrite(STEP_PIN_ENABLE, LOW);
-    }
-}
+//  bluetoothCommandsListener();
+//  readComponentStatus();
+//  checkPressedButtons();
+//  checkBluetoothCommands();
+//  readInjectionPressure() ;
   myStepMotor.run();
-
+//MOCK
+startInjection();
+delay(10000);
+stopMachine() ;
+//delay(1000);
+//MPCK
 }
 
 
@@ -228,7 +213,7 @@ void backALitle() {
   drawLogo();
   settingWaitStatus();
   settingBackLittleMotor();
-  delay(5000);
+  delay(1000);
   drawWait();
   printStatusOnSerial();
 
@@ -414,58 +399,58 @@ void playHappyMelody() {
 }
 
 void drawInit() {
-//  u8g.firstPage();
+//  u8g2.firstPage();
 //  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, "(31)98847-0290");
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, START.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 5, 15, "(31)98847-0290");
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 10, 57, START.c_str());
 //    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+//    u8g2.drawRFrame(0, 18, 128, 46, 4);
+//  } while ( u8g2.nextPage() );
 }
 
 void drawInjet() {
-//  u8g.firstPage();
+//  u8g2.firstPage();
 //  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, INJECT.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 10, 57, INJECT.c_str());
 //    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+//    u8g2.drawRFrame(0, 18, 128, 46, 4);
+//  } while ( u8g2.nextPage() );
 }
 
 void drawRecall() {
-//  u8g.firstPage();
+//  u8g2.firstPage();
 //  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, RECALL.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 10, 57, RECALL.c_str());
 //    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+//    u8g2.drawRFrame(0, 18, 128, 46, 4);
+//  } while ( u8g2.nextPage() );
 }
 
 void drawWait() {
-//  u8g.firstPage();
+//  u8g2.firstPage();
 //  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, WAIT.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+//    u8g2.setFont(u8g2_font_helvR14_tr);
+//    u8g2.drawStr( 10, 57, WAIT.c_str());
 //    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+//    u8g2.drawRFrame(0, 18, 128, 46, 4);
+//  } while ( u8g2.nextPage() );
 }
 
 void drawLogo() {
-//  u8g.firstPage();
+//  u8g2.firstPage();
 //  do {
-//    u8g.drawBitmapP( 0, 0, 16, 64, logo);
-//  } while ( u8g.nextPage() );
+//    u8g2.drawBitmap( 0, 0, 16, 64, logo);
+//  } while ( u8g2.nextPage() );
 }
 
 void bluetoothCommandsListener() {
@@ -490,17 +475,17 @@ void bluetoothCommandsListener() {
 
 void setupOled() {
 //
-//  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
-//    u8g.setColorIndex(255);     // white
+//  if ( u8g2.getMode() == u8g2_MODE_R3G3B2 ) {
+//    u8g2.setColorIndex(255);     // white
 //  }
-//  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
-//    u8g.setColorIndex(3);         // max intensity
+//  else if ( u8g2.getMode() == u8g2_MODE_GRAY2BIT ) {
+//    u8g2.setColorIndex(3);         // max intensity
 //  }
-//  else if ( u8g.getMode() == U8G_MODE_BW ) {
-//    u8g.setColorIndex(1);         // pixel on
+//  else if ( u8g2.getMode() == u8g2_MODE_BW ) {
+//    u8g2.setColorIndex(1);         // pixel on
 //  }
-//  else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
-//    u8g.setHiColorByRGB(255, 255, 255);
+//  else if ( u8g2.getMode() == u8g2_MODE_HICOLOR ) {
+//    u8g2.setHiColorByRGB(255, 255, 255);
 //  }
 
 }
@@ -518,7 +503,6 @@ void putMachineInReadyState() {
   myStepMotor.move(0);
   digitalWrite(STEP_PIN_ENABLE, HIGH);
   colorCrossFade(dimbranco);
-  Serial.begin(9600);
   Serial.print("Maquina inicializada\n\n");
 }
 
