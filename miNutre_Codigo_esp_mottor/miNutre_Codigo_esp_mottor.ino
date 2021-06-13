@@ -517,13 +517,13 @@ void readComponentStatus() {
 }
 
 void checkPressedButtons() {
-//  Serial.print("My status = ");
-//  Serial.println(buttonBusStatus);
+  Serial.print("My status = ");
+  Serial.println(buttonBusStatus);
   //BOTAO VERDE INICIAR
   if (buttonBusStatus >= 115 && buttonBusStatus < 150 ) {
     if (isInjecting == 0 && isWaiting == 1 && isRecalling == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
-      startInjection();
+//      startInjection();
     }
   }
   //BOTAO VERMELHO PARAR
@@ -543,7 +543,7 @@ void checkPressedButtons() {
   else  if (buttonBusStatus >= 415 && buttonBusStatus < 550) {
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0
         && botI == 0 && botR == 0 && botP == 1 && fcI == 1 && fcR == 0) {
-      stopInjectionAndPickup();
+//      stopInjectionAndPickup();
     }
   }
 }
@@ -668,15 +668,17 @@ void settingBackLittleMotor() {
 
 void readInjectionPressure() {
   pressureReading = analogRead(PRESSURE_SENSOR);
+//  Serial.print("Pressao ");
+//  Serial.println(pressureReading);
   // Diversos limiares
-  //  if (pressureReading < 10) {}
-  //  else if (pressureReading < 200) {}
-  //  else if (pressureReading < 500) {}
-  //  else if (pressureReading < 600) {}
-  //  else {
-  //    Serial.println(" - PANIC");
-  //    pressurePanic();
-  //  }
+//    if (pressureReading < 10) {}
+//    else if (pressureReading < 200) {}
+//    else if (pressureReading < 500) {}
+//    else if (pressureReading < 600) {}
+//    else {
+//      Serial.println(" - PANIC");
+//      pressurePanic();
+//    }
 }
 
 //ONLINE IMAGE TO C ARRAY https://littlevgl.com/image-to-c-array
