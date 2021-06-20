@@ -77,13 +77,13 @@ const uint8_t logo[] PROGMEM = {
 
 #define STEP_PIN                   0
 #define DIRECTION_PIN              2
+#define MOTOR_ENABLE_PIN          15
 #define PRESSURE_SENSOR           A0
 #define BUTTONS                   A0
 #define BUZZER                     16
 #define BLUE                      13
 #define GREEN                     12
 #define RED                       14
-#define MOTOR_ENABLE_PIN          15
 
 
 AccelStepper myStepMotor(AccelStepper::DRIVER, STEP_PIN, DIRECTION_PIN );
@@ -96,7 +96,7 @@ String RECALL = "RECALLn";
 String WAIT   = "WAITING";
 String INJECT = "INJECTn";
 String START = "STARTIn";
-
+String LOGO = "miNUTRE";
 
 long myStepRevolutions = -1000000;
 
@@ -123,6 +123,14 @@ int pressureReading;
 int incomingByte = 0;
 int PULSE_WIDTH = 3;
 
+int BT01_MIN = 200;
+int BT01_MAX = 228;
+int BT02_MIN = 240;
+int BT02_MAX = 297;
+int FDC01_MIN = 500;
+int FDC01_MAX = 550;
+int FDC02_MIN = 1000;
+int FDC02_MAX = 1030;
 
 void setup() {
   Serial.begin(115200);
@@ -410,8 +418,8 @@ void playHappyMelody() {
 void drawInit() {
   u8g2.firstPage();
   do {
-    u8g2.setFont(u8g2_font_helvR14_tr);
-    u8g2.drawStr( 5, 15, "(31)98847-0290");
+    u8g2.setFont(u8g2_font_ncenB14_tr);
+    u8g2.drawStr( 5, 15, "(31)988470290");
     u8g2.setFont(u8g2_font_helvR14_tr);
     u8g2.drawStr( 10, 57, START.c_str());
     //frame
@@ -456,29 +464,36 @@ void drawWait() {
 }
 
 void drawLogo() {
-//    u8g2.firstPage();
-//    do {
-//      u8g2.drawBitmap( 0, 0, 16, 64, logo);
-//    } while ( u8g2.nextPage() );
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB14_tr);
+    u8g2.drawStr( 5, 15, "(31)988470290");
+    u8g2.setFont(u8g2_font_helvR14_tr);
+    u8g2.drawStr( 10, 57, LOGO.c_str());
+    //frame
+    u8g2.drawRFrame(0, 18, 128, 46, 4);
+  } while ( u8g2.nextPage() );
+  delay(3000);
 }
 
 void bluetoothCommandsListener() {
 
-  //  if (Serial.available() > 0) {
-  //    stringBluetooth = "";
-  //  }
-  //
-  //  while (Serial.available() > 0) {
-  //    command = ((byte)Serial.read());
-  //
-  //    if (command == ':') {
-  //      Serial.println("Parando");
-  //      break;
-  //    } else {
-  //      stringBluetooth += command;
-  //    }
-  //    delay(1);
-  //  }
+    if (Serial.available() > 0) {
+      stringBluetooth = "";
+    }
+  
+    while (Serial.available() > 0) {
+      command = ((byte)Serial.read());
+  
+      if (command == ':') {
+        Serial.println("Parando");
+        break;
+      } else {
+        stringBluetooth += command;
+      }
+      delay(1);
+    }
 
 }
 
@@ -515,27 +530,27 @@ void checkPressedButtons() {
 //    Serial.println(buttonBusStatus);
 
   //BOTAO VERDE INICIAR
-  if (buttonBusStatus >= 199 && buttonBusStatus < 220 ) {
+  if (buttonBusStatus >= BT01_MIN && buttonBusStatus < BT01_MAX ) {
     if (isInjecting == 0 && isWaiting == 1 && isRecalling == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
       startInjection();
     }
   }
   //BOTAO VERMELHO PARAR
-  else    if (buttonBusStatus >= 260 && buttonBusStatus < 290) { //>=220 && buttonBusStatus<240
+  else    if (buttonBusStatus >= BT02_MIN && buttonBusStatus < BT02_MAX) { //>=220 && buttonBusStatus<240
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0) {
       stopMachine();
     }
   }
   //FIM RECOLHIMENTO
-  else   if (buttonBusStatus >= 900 &&  buttonBusStatus < 1050) { //buttonBusStatus >=670
+  else   if (buttonBusStatus >= FDC02_MIN &&  buttonBusStatus < FDC02_MAX) { //buttonBusStatus >=670
     if (isInjecting == 0 && isWaiting == 0 && isRecalling == 1
         && botI == 0 && botR == 0 && botP == 0 && fcI == 0 && fcR == 1) {
       stopMachine();
     }
   }
   //FIM INJECAO
-  else  if (buttonBusStatus >= 415 && buttonBusStatus < 550) {
+  else  if (buttonBusStatus >= FDC01_MIN && buttonBusStatus < FDC01_MAX) {
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0
         && botI == 0 && botR == 0 && botP == 1 && fcI == 1 && fcR == 0) {
       stopInjectionAndPickup();
