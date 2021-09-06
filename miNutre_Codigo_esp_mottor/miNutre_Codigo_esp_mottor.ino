@@ -5,10 +5,8 @@
 //mar 2021
 
 #include <AccelStepper.h>
-//#include "U8glib.h"
-//U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 #include <U8g2lib.h>
-U8G2_SSD1306_64X32_1F_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 5, /* data=*/ 4);   // ESP32 Thing, HW I2C with pin remapping
 
 const uint8_t logo[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -76,16 +74,19 @@ const uint8_t logo[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
-#define STEP  0
-#define DIR 2
+
+#define STEP_PIN                   0
+#define DIRECTION_PIN              2
+#define MOTOR_ENABLE_PIN          15
 #define PRESSURE_SENSOR           A0
 #define BUTTONS                   A0
-#define BUZZER                    10
+#define BUZZER                     16
 #define BLUE                      13
-#define GREEN                      12
-#define RED                        14
-#define STEP_PIN_ENABLE            15
-AccelStepper myStepMotor(1, STEP, DIR );
+#define GREEN                     12
+#define RED                       14
+
+
+AccelStepper myStepMotor(AccelStepper::DRIVER, STEP_PIN, DIRECTION_PIN );
 
 char command;
 String stringBluetooth;
@@ -95,9 +96,10 @@ String RECALL = "RECALLn";
 String WAIT   = "WAITING";
 String INJECT = "INJECTn";
 String START = "STARTIn";
+String LOGO = "miNUTRE";
 
+long myStepRevolutions = -1000000;
 
-long myStepRevolutions = 1000000;
 int preto     [3]  = { 0, 0, 0 };
 int dimbranco [3]  = { 30, 30, 30};
 int redValue = preto[0];
@@ -119,10 +121,19 @@ int  fcI  = 0;
 int  fcR  = 0;
 int pressureReading;
 int incomingByte = 0;
+int PULSE_WIDTH = 3;
 
+int BT01_MIN = 200;
+int BT01_MAX = 228;
+int BT02_MIN = 240;
+int BT02_MAX = 297;
+int FDC01_MIN = 500;
+int FDC01_MAX = 550;
+int FDC02_MIN = 1000;
+int FDC02_MAX = 1030;
 
 void setup() {
-
+  Serial.begin(115200);
   setupInOut();
   putMachineInReadyState();
   setupOled();
@@ -140,8 +151,9 @@ void loop() {
   checkPressedButtons();
   checkBluetoothCommands();
   readInjectionPressure() ;
-    //MOCK
-if (Serial.available() > 0) {
+  //M O C K
+
+  if (Serial.available() > 0) {
     // read the incoming byte:
     incomingByte = Serial.read();
 
@@ -149,21 +161,21 @@ if (Serial.available() > 0) {
     Serial.print("I received: ");
     Serial.println(incomingByte);
 
-    if(incomingByte == 49){
-        startInjection() ;
-        digitalWrite(STEP_PIN_ENABLE, LOW);
-    } else  if(incomingByte == 50){
+    if (incomingByte == 49) {
+      startInjection() ;
+    } else  if (incomingByte == 50) {
       stopInjectionAndPickup() ;
-      digitalWrite(STEP_PIN_ENABLE, LOW);
+    } else  if (incomingByte == 48) {
+      stopMachine() ;
     }
-}
+  }
+  //M O C K
   myStepMotor.run();
-
 }
 
 
 void startInjection() {
-  Serial.println("INICIANDO INJECAO");
+  Serial.println("startInjection");
   settingInjectionStatus();
   turnOnBlueLight();
   drawInjet();
@@ -172,17 +184,8 @@ void startInjection() {
   printStatusOnSerial();
 }
 
-void pickupRecall() {
-  Serial.println("RECOLHENDO CURSOR");
-  settingRecallStatus();
-  turnOnWhiteLight();
-  drawRecall();
-  settingRecallMotor();
-  printStatusOnSerial();
-}
-
 void stopInjectionAndPickup() {
-  Serial.println("A INJECAO ACABOU");
+  Serial.println("stopInjectionAndPickup");
   turnOnVioletLight();
   drawWait();
   settingStopRecallStatus();
@@ -191,17 +194,27 @@ void stopInjectionAndPickup() {
   pickupRecall();
 }
 
+void pickupRecall() {
+  Serial.println("pickupRecall");
+  settingRecallStatus();
+  turnOnWhiteLight();
+  drawRecall();
+  settingRecallMotor();
+  printStatusOnSerial();
+}
+
 void stopMachine() {
-  Serial.println(" MAQUINA PAUSADA");
+  Serial.println(" stopMachine");
   turnOnRedLight();
   drawWait();
   settingWaitStatus();
   settingWaitMotor();
   printStatusOnSerial();
+  playHappyMelody();
 }
 
 void pressurePanic() {
-  Serial.println(" MAQUINA PAUSADA");
+  Serial.println(" pressurePanic");
   Serial.println("a pressão atingiu niveis alarmantes");
   turnOnRedLight();
   drawLogo();
@@ -211,24 +224,13 @@ void pressurePanic() {
   printStatusOnSerial();
 }
 
-void stopMotorAtPickup() {
-  Serial.println("O RECOLHIMENTO CHEGOU AO FIM");
-  turnOnWhiteLight();
-  drawInit();
-  playHappyMelody();
-  myStepMotor.move(0);
-  digitalWrite(STEP_PIN_ENABLE, HIGH);
-  delay(500);
-  backALitle();
-}
-
 void backALitle() {
-  Serial.println("INICIANDO RETORNO POSICAO ZERO");
+  Serial.println("backALitle");
   turnOnGreenLight();
   drawLogo();
   settingWaitStatus();
   settingBackLittleMotor();
-  delay(5000);
+  delay(1000);
   drawWait();
   printStatusOnSerial();
 
@@ -414,139 +416,141 @@ void playHappyMelody() {
 }
 
 void drawInit() {
-//  u8g.firstPage();
-//  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, "(31)98847-0290");
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, START.c_str());
-//    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB14_tr);
+    u8g2.drawStr( 5, 15, "(31)988470290");
+    u8g2.setFont(u8g2_font_helvR14_tr);
+    u8g2.drawStr( 10, 57, START.c_str());
+    //frame
+    u8g2.drawRFrame(0, 18, 128, 46, 4);
+  } while ( u8g2.nextPage() );
 }
 
 void drawInjet() {
-//  u8g.firstPage();
-//  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, INJECT.c_str());
-//    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+    u8g2.firstPage();
+    do {
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 10, 57, INJECT.c_str());
+      //frame
+      u8g2.drawRFrame(0, 18, 128, 46, 4);
+    } while ( u8g2.nextPage() );
 }
 
 void drawRecall() {
-//  u8g.firstPage();
-//  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, RECALL.c_str());
-//    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+    u8g2.firstPage();
+    do {
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 10, 57, RECALL.c_str());
+      //frame
+      u8g2.drawRFrame(0, 18, 128, 46, 4);
+    } while ( u8g2.nextPage() );
 }
 
 void drawWait() {
-//  u8g.firstPage();
-//  do {
-//    u8g.setFont(u8g_font_8x13B);
-//    u8g.drawStr( 5, 15, MACHINE_NAME.c_str());
-//    u8g.setFont(u8g_font_fub20);
-//    u8g.drawStr( 10, 57, WAIT.c_str());
-//    //frame
-//    u8g.drawRFrame(0, 18, 128, 46, 4);
-//  } while ( u8g.nextPage() );
+    u8g2.firstPage();
+    do {
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 5, 15, MACHINE_NAME.c_str());
+      u8g2.setFont(u8g2_font_helvR14_tr);
+      u8g2.drawStr( 10, 57, WAIT.c_str());
+      //frame
+      u8g2.drawRFrame(0, 18, 128, 46, 4);
+    } while ( u8g2.nextPage() );
 }
 
 void drawLogo() {
-//  u8g.firstPage();
-//  do {
-//    u8g.drawBitmapP( 0, 0, 16, 64, logo);
-//  } while ( u8g.nextPage() );
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB14_tr);
+    u8g2.drawStr( 5, 15, "(31)988470290");
+    u8g2.setFont(u8g2_font_helvR14_tr);
+    u8g2.drawStr( 10, 57, LOGO.c_str());
+    //frame
+    u8g2.drawRFrame(0, 18, 128, 46, 4);
+  } while ( u8g2.nextPage() );
+  delay(3000);
 }
 
 void bluetoothCommandsListener() {
 
-  if (Serial.available() > 0) {
-    stringBluetooth = "";
-  }
-
-  while (Serial.available() > 0) {
-    command = ((byte)Serial.read());
-
-    if (command == ':') {
-      Serial.println("Parando");
-      break;
-    } else {
-      stringBluetooth += command;
+    if (Serial.available() > 0) {
+      stringBluetooth = "";
     }
-    delay(1);
-  }
+  
+    while (Serial.available() > 0) {
+      command = ((byte)Serial.read());
+  
+      if (command == ':') {
+        Serial.println("Parando");
+        break;
+      } else {
+        stringBluetooth += command;
+      }
+      delay(1);
+    }
 
 }
 
 void setupOled() {
-//
-//  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
-//    u8g.setColorIndex(255);     // white
-//  }
-//  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
-//    u8g.setColorIndex(3);         // max intensity
-//  }
-//  else if ( u8g.getMode() == U8G_MODE_BW ) {
-//    u8g.setColorIndex(1);         // pixel on
-//  }
-//  else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
-//    u8g.setHiColorByRGB(255, 255, 255);
-//  }
+
+  u8g2.begin();
+  u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_helvR14_tr);
+  u8g2.setCursor(0, 24);
+  u8g2.print("Hello!");
+  u8g2.sendBuffer();
+  delay(100);
 
 }
 
 void setupInOut() {
+//  pinMode(PRESSURE_SENSOR, INPUT);
   pinMode(BUTTONS, INPUT);
   pinMode(BLUE, OUTPUT) ;
   pinMode(GREEN, OUTPUT);
   pinMode(RED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
-  pinMode(STEP_PIN_ENABLE, OUTPUT);
+  pinMode(MOTOR_ENABLE_PIN, OUTPUT);
+
 }
 
-void putMachineInReadyState() {
-  myStepMotor.move(0);
-  digitalWrite(STEP_PIN_ENABLE, HIGH);
-  colorCrossFade(dimbranco);
-  Serial.begin(9600);
-  Serial.print("Maquina inicializada\n\n");
-}
 
 void readComponentStatus() {
   buttonBusStatus   = analogRead(BUTTONS);
 }
 
 void checkPressedButtons() {
+//    Serial.print("My status = ");
+//    Serial.println(buttonBusStatus);
+
   //BOTAO VERDE INICIAR
-  if (buttonBusStatus >= 130 && buttonBusStatus < 150 ) {
+  if (buttonBusStatus >= BT01_MIN && buttonBusStatus < BT01_MAX ) {
     if (isInjecting == 0 && isWaiting == 1 && isRecalling == 0
         && botI == 1 && botR == 0 && botP == 0 && fcI == 0 && fcR == 0 ) {
       startInjection();
     }
   }
   //BOTAO VERMELHO PARAR
-  else    if (buttonBusStatus >= 159 && buttonBusStatus < 200) { //>=220 && buttonBusStatus<240
+  else    if (buttonBusStatus >= BT02_MIN && buttonBusStatus < BT02_MAX) { //>=220 && buttonBusStatus<240
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0) {
       stopMachine();
     }
   }
-  else   if (buttonBusStatus >= 200 &&  buttonBusStatus < 300) { //buttonBusStatus >=670
+  //FIM RECOLHIMENTO
+  else   if (buttonBusStatus >= FDC02_MIN &&  buttonBusStatus < FDC02_MAX) { //buttonBusStatus >=670
     if (isInjecting == 0 && isWaiting == 0 && isRecalling == 1
         && botI == 0 && botR == 0 && botP == 0 && fcI == 0 && fcR == 1) {
-      stopMotorAtPickup();
+      stopMachine();
     }
   }
-  else  if (buttonBusStatus >= 301 && buttonBusStatus < 350) {
+  //FIM INJECAO
+  else  if (buttonBusStatus >= FDC01_MIN && buttonBusStatus < FDC01_MAX) {
     if (isInjecting == 1 && isWaiting == 0 && isRecalling == 0
         && botI == 0 && botR == 0 && botP == 1 && fcI == 1 && fcR == 0) {
       stopInjectionAndPickup();
@@ -633,43 +637,58 @@ void settingWaitStatus() {
   fcR  = 0;
 }
 
+void putMachineInReadyState() {
+  myStepMotor.setMinPulseWidth(PULSE_WIDTH);
+  myStepMotor.setPinsInverted(false, false);
+  myStepMotor.setPinsInverted(true, true);
+  myStepMotor.moveTo(0);
+  myStepMotor.enableOutputs();
+  colorCrossFade(dimbranco);
+  Serial.print("Maquina inicializada\n\n");
+}
+
 void settingInjectionMotor() {
-  myStepMotor.setMaxSpeed(150);
-  myStepMotor.setSpeed(150);
-  myStepMotor.setAcceleration(150);//Novo
-  digitalWrite(STEP_PIN_ENABLE, LOW);
-  myStepMotor.move(-myStepRevolutions);
+  digitalWrite(MOTOR_ENABLE_PIN, LOW);
+  myStepMotor.setMinPulseWidth(PULSE_WIDTH);
+  myStepMotor.setMaxSpeed(15);
+  myStepMotor.setSpeed(15);
+  myStepMotor.setAcceleration(15);//Novo
+  myStepMotor.moveTo(-myStepRevolutions);
+  myStepMotor.disableOutputs();
 }
 
 void settingRecallMotor() {
-  digitalWrite(STEP_PIN_ENABLE, LOW);
-  myStepMotor.setMaxSpeed(2000);
-  myStepMotor.setSpeed(2000);
-  myStepMotor.setAcceleration(2000);
-  myStepMotor.move(myStepRevolutions);
+  digitalWrite(MOTOR_ENABLE_PIN, LOW);
+  myStepMotor.setMinPulseWidth(PULSE_WIDTH);
+  myStepMotor.setMaxSpeed(1000);
+  myStepMotor.setSpeed(1000);
+  myStepMotor.setAcceleration(1000);
+  myStepMotor.moveTo(myStepRevolutions);
 }
 
 void settingWaitMotor() {
   myStepMotor.move(0);
-  digitalWrite(STEP_PIN_ENABLE, HIGH);
+  myStepMotor.disableOutputs();
+  digitalWrite(MOTOR_ENABLE_PIN, HIGH);
 }
 
 void settingBackLittleMotor() {
-  digitalWrite(STEP_PIN_ENABLE, LOW);
-  myStepMotor.move(-1000);
+  myStepMotor.move(-10);
 }
 
 void readInjectionPressure() {
-  pressureReading = analogRead(PRESSURE_SENSOR);
+  //  pressureReading = analogRead(PRESSURE_SENSOR);
+  //  Serial.print("Pressao ");
+  //  Serial.println(pressureReading);
   // Diversos limiares
-  if (pressureReading < 10) {} 
-  else if (pressureReading < 200) {} 
-  else if (pressureReading < 500) {} 
-  else if (pressureReading < 600) {} 
-  else {
-    Serial.println(" - PANIC");
-    pressurePanic();
-  }
+  //    if (pressureReading < 10) {}
+  //    else if (pressureReading < 200) {}
+  //    else if (pressureReading < 500) {}
+  //    else if (pressureReading < 600) {}
+  //    else {
+  //      Serial.println(" - PANIC");
+  //      pressurePanic();
+  //    }
 }
 
 //ONLINE IMAGE TO C ARRAY https://littlevgl.com/image-to-c-array
