@@ -1,4 +1,14 @@
-# maquinaInjetoraSeringa60mlArduino
+# Protótipo de Maquina Injetora para Seringa 60ml com Arduino
+
+![enter image description here](https://miro.medium.com/max/700/1*s4zdMG6NSGvmYjhllYb9gg.png)
+João Santos
+
+Em 2015 devido a um estreitamento de esôfago (disfagia) causado por um câncer, minha mãe passou a se alimentar por uma sonda de [**Gastrostomia**](https://www.tuasaude.com/gastrostomia/) e a partir dai, passamos a conviver com problemas gerados pela alimentação através de sonda.
+
+Durante dois anos observando esses problemas, me veio a motivação de construir um protótipo de uma máquina injetora para nutrição.
+
+[Artigo](https://joaomarcelo-ms.medium.com/prot%C3%B3tipo-de-maquina-injetora-para-seringa-60ml-com-arduino-6b15f981d936)
+
 
 
 Prototipo de maquina injetora de dieta liquida com seringa 60ML desenvolvido com Arduino;</br>
