@@ -1,7 +1,7 @@
 
-#define STEP_PIN                  3
-#define DIRECTION_PIN             4
-#define MOTOR_ENABLE_PIN          8
+#define STEP_PIN                  4
+#define DIRECTION_PIN             5
+#define MOTOR_ENABLE_PIN          6
 #define PRESSURE_SENSOR           A1
 #define BUTTONS                   A0
 #define BUZZER                    2

@@ -153,6 +153,19 @@ void drawWait() {
   delay(1000);
 }
 
+void drawBtn(int btn){
+  display.clearDisplay();
+  display.drawRoundRect(x0, y0, width, height, radius, tint);
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(20, 0);
+  display.println(btn);
+  display.setTextSize(2);
+  display.setCursor(10, 35);
+  display.println(F("BTN"));
+  display.display();
+  delay(1000);
+}
 void setupOled() {
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));

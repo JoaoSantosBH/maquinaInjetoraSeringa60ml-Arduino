@@ -27,14 +27,31 @@ int  fcI  = 0;
 int  fcR  = 0;
 int incomingByte = 0;
 
-int BT01_MIN = 200;
-int BT01_MAX = 228;
-int BT02_MIN = 240;
-int BT02_MAX = 297;
-int FDC01_MIN = 500;
-int FDC01_MAX = 550;
-int FDC02_MIN = 1000;
-int FDC02_MAX = 1030;
+//iniciar
+int BT01_MIN = 230;
+int BT01_MAX = 250;
+//int BT01_MIN = 220;
+//int BT01_MAX = 230;
+
+//PARAR
+int BT02_MIN = 170;
+int BT02_MAX = 180;
+//
+//int BT02_MIN = 165;
+//int BT02_MAX = 170;
+
+//FIM infecao
+int FDC01_MIN = 345;
+int FDC01_MAX = 350;
+//int FDC01_MIN = 330;
+//int FDC01_MAX = 340;
+
+//FIM recolhimeto
+int FDC02_MIN = 700;
+int FDC02_MAX = 710;
+
+//int FDC02_MIN = 670;
+//int FDC02_MAX = 680;
 
 void setup() {
   Serial.begin(9600);
@@ -45,6 +62,7 @@ void setup() {
   drawLogo();
   printStatusOnSerial();
   turnOnGreenLight();
+  drawWait();
 
 }
 
@@ -163,6 +181,7 @@ void readComponentStatus() {
 }
 
 void checkPressedButtons() {
+//  drawBtn(buttonBusStatus);
   //    Serial.print("My status = ");
   //    Serial.println(buttonBusStatus);
 
